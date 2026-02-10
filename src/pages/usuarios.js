@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import api from '@/lib/api';
-import { ArrowLeft, Edit2, Trash2, Eye, X, MoreVertical, UserPlus } from 'lucide-react';
+import { ArrowLeft, Edit2, Trash2, Eye, X, MoreVertical, UserPlus, Plus, Check } from 'lucide-react';
 
 export default function UsuariosPage() {
   const router = useRouter();
@@ -15,15 +15,18 @@ export default function UsuariosPage() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEventsModal, setShowEventsModal] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [events, setEvents] = useState([]);
+  const [userEvents, setUserEvents] = useState([]);
+  const [loadingEventId, setLoadingEventId] = useState(null);
   
   // State for new user
   const [newData, setNewData] = useState({
     name: '',
     phone: '',
     password: '',
-    planType: 'Ahorro Campamento 2027',
     role: 'USER'
   });
 
@@ -39,12 +42,14 @@ export default function UsuariosPage() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const [usersRes, depositsRes] = await Promise.all([
+      const [usersRes, depositsRes, eventsRes] = await Promise.all([
         api.get('/users'),
         api.get('/deposits'),
+        api.get('/events'),
       ]);
       setUsers(usersRes.data.data || []);
       setDeposits(depositsRes.data.data || []);
+      setEvents(eventsRes.data.data || []);
       setError('');
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -64,7 +69,6 @@ export default function UsuariosPage() {
         name: '',
         phone: '',
         password: '',
-        planType: 'Ahorro Campamento 2027',
         role: 'USER'
       });
       await fetchUsers();
@@ -77,7 +81,7 @@ export default function UsuariosPage() {
 
   const handleEdit = (user) => {
     setEditingId(user._id);
-    setEditData({ name: user.name, planType: user.planType, isActive: user.isActive });
+    setEditData({ name: user.name, isActive: user.isActive });
     setOpenMenuId(null);
   };
 
@@ -130,6 +134,56 @@ export default function UsuariosPage() {
     setSelectedUser(user);
     setShowDepositModal(true);
     setOpenMenuId(null);
+  };
+
+  const handleViewEvents = async (user) => {
+    try {
+      setSelectedUser(user);
+      const response = await api.get(`/users/${user._id}/events`);
+      setUserEvents(response.data.data || []);
+      setShowEventsModal(true);
+    } catch (err) {
+      console.error('Error fetching user events:', err);
+      setUserEvents([]);
+      setShowEventsModal(true);
+    }
+    setOpenMenuId(null);
+  };
+
+  const handleRegisterEvent = async (userId, eventId) => {
+    try {
+      setLoadingEventId(eventId);
+      await api.post(`/events/${eventId}/register-user`, { userId });
+      
+      // Refrescar eventos del usuario
+      const response = await api.get(`/users/${userId}/events`);
+      setUserEvents(response.data.data || []);
+      
+      // Refrescar lista general de usuarios para actualizar badge de eventos
+      await fetchUsers();
+    } catch (err) {
+      console.error('Error registering event:', err);
+    } finally {
+      setLoadingEventId(null);
+    }
+  };
+
+  const handleUnregisterEvent = async (userId, eventId) => {
+    try {
+      setLoadingEventId(eventId);
+      await api.delete(`/events/${eventId}/unregister-user`, { data: { userId } });
+      
+      // Refrescar eventos del usuario
+      const response = await api.get(`/users/${userId}/events`);
+      setUserEvents(response.data.data || []);
+      
+      // Refrescar lista general de usuarios para actualizar badge de eventos
+      await fetchUsers();
+    } catch (err) {
+      console.error('Error unregistering event:', err);
+    } finally {
+      setLoadingEventId(null);
+    }
   };
 
   const filteredUsers = users.filter((user) => 
@@ -206,7 +260,7 @@ export default function UsuariosPage() {
                   <tr className="border-b border-cyan-500/30 bg-cyan-500/5">
                     <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Nombre</th>
                     <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Teléfono</th>
-                    <th className="hidden sm:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Plan</th>
+                    <th className="hidden sm:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Eventos</th>
                     <th className="hidden md:table-cell text-right py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Ahorrado (Bs.)</th>
                     <th className="hidden lg:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Rol</th>
                     <th className="hidden sm:table-cell text-center py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Estado</th>
@@ -228,14 +282,9 @@ export default function UsuariosPage() {
                           </td>
                           <td className="py-2 sm:py-4 px-3 sm:px-4 text-text-secondary text-sm">{user.phone}</td>
                           <td className="hidden sm:table-cell py-2 sm:py-4 px-3 sm:px-4">
-                            <select
-                              value={editData.planType}
-                              onChange={(e) => setEditData({ ...editData, planType: e.target.value })}
-                              className="w-full px-2 py-1 text-sm bg-bg-card border border-cyan-500/30 rounded text-text-primary focus:ring-cyan-500 focus:border-cyan-500"
-                            >
-                              <option value="Ahorro Campamento 2027">Ahorro Campamento 2027</option>
-                              <option value="Ahorro Otras Actividades">Ahorro Otras Actividades</option>
-                            </select>
+                            <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded">
+                              {user.registeredEvents?.length || 0} eventos
+                            </span>
                           </td>
                           <td className="hidden md:table-cell py-2 sm:py-4 px-3 sm:px-4 text-right font-medium">
                             <span className="text-secondary text-sm">Bs. {getUserTotalSavings(user._id).toFixed(2)}</span>
@@ -275,7 +324,11 @@ export default function UsuariosPage() {
                         <>
                           <td className="py-2 sm:py-4 px-3 sm:px-4 font-medium text-text-primary text-sm sm:text-base">{user.name}</td>
                           <td className="py-2 sm:py-4 px-3 sm:px-4 text-text-secondary text-sm sm:text-base">{user.phone}</td>
-                          <td className="hidden sm:table-cell py-2 sm:py-4 px-3 sm:px-4 text-text-secondary text-sm">{user.planType}</td>
+                          <td className="hidden sm:table-cell py-2 sm:py-4 px-3 sm:px-4 text-text-secondary text-sm">
+                            <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded">
+                              {user.registeredEvents?.length || 0} eventos
+                            </span>
+                          </td>
                           <td className="hidden md:table-cell py-2 sm:py-4 px-3 sm:px-4 text-right font-medium">
                             <span className="text-secondary text-sm">Bs. {getUserTotalSavings(user._id).toFixed(2)}</span>
                           </td>
@@ -310,8 +363,15 @@ export default function UsuariosPage() {
                               {openMenuId === user._id && (
                                 <div className="absolute right-0 mt-8 w-48 bg-bg-card border border-cyan-500/30 rounded-lg shadow-lg shadow-cyan-500/10 z-10">
                                   <button
+                                    onClick={() => handleViewEvents(user)}
+                                    className="block w-full text-left px-4 py-2 hover:bg-accent/10 text-accent flex items-center transition-colors"
+                                  >
+                                    <Plus size={14} className="mr-2" />
+                                    Ver Eventos
+                                  </button>
+                                  <button
                                     onClick={() => handleViewDeposits(user)}
-                                    className="block w-full text-left px-4 py-2 hover:bg-secondary/10 text-secondary flex items-center transition-colors"
+                                    className="block w-full text-left px-4 py-2 hover:bg-secondary/10 text-secondary flex items-center transition-colors border-t border-cyan-500/20"
                                   >
                                     <Eye size={14} className="mr-2" />
                                     Ver Depósitos
@@ -354,38 +414,38 @@ export default function UsuariosPage() {
             <div className="bg-bg-card rounded-lg max-w-md w-full overflow-hidden shadow-2xl border border-cyan-500/30">
               <div className="bg-primary text-white p-6 flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Registrar Usuario</h2>
-                <button onClick={() => setShowAddModal(false)} className="hover:bg-blue-700 p-1 rounded transition-colors">
+                <button onClick={() => setShowAddModal(false)} className="hover:bg-blue-800 p-1 rounded transition-colors">
                   <X size={24} />
                 </button>
               </div>
               
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Nombre Completo</label>
                   <input
                     type="text"
                     required
                     value={newData.name}
                     onChange={(e) => setNewData({ ...newData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none shadow-sm"
+                    className="w-full px-4 py-2 bg-bg-card border border-cyan-500/30 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none focus:border-primary text-text-primary placeholder-text-disabled transition-colors"
                     placeholder="Ej. Juan Pérez"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Teléfono</label>
                   <input
                     type="text"
                     required
                     value={newData.phone}
                     onChange={(e) => setNewData({ ...newData, phone: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none shadow-sm"
+                    className="w-full px-4 py-2 bg-bg-card border border-cyan-500/30 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none focus:border-primary text-text-primary placeholder-text-disabled transition-colors"
                     placeholder="Ej. 71234567"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Clave de Acceso</label>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Clave de Acceso</label>
                   <input
                     type="text"
                     style={{ WebkitTextSecurity: 'disc' }}
@@ -393,29 +453,17 @@ export default function UsuariosPage() {
                     autoComplete="off"
                     value={newData.password}
                     onChange={(e) => setNewData({ ...newData, password: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none shadow-sm"
+                    className="w-full px-4 py-2 bg-bg-card border border-cyan-500/30 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none focus:border-primary text-text-primary placeholder-text-disabled transition-colors"
                     placeholder="Mínimo 6 caracteres"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Plan de Ahorro</label>
-                  <select
-                    value={newData.planType}
-                    onChange={(e) => setNewData({ ...newData, planType: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none shadow-sm"
-                  >
-                    <option value="Ahorro Campamento 2027">Ahorro Campamento 2027</option>
-                    <option value="Ahorro Otras Actividades">Ahorro Otras Actividades</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Rol del Usuario</label>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Rol del Usuario</label>
                   <select
                     value={newData.role}
                     onChange={(e) => setNewData({ ...newData, role: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none shadow-sm"
+                    className="w-full px-4 py-2 bg-bg-card border border-cyan-500/30 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none focus:border-primary text-text-primary transition-colors"
                   >
                     <option value="USER">Usuario (Participante)</option>
                     <option value="ADMIN">Administrador</option>
@@ -426,7 +474,7 @@ export default function UsuariosPage() {
                   <button
                     type="button"
                     onClick={() => setShowAddModal(false)}
-                    className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                    className="flex-1 px-4 py-2 bg-cyan-500/20 text-primary border border-cyan-500/30 rounded-lg hover:bg-cyan-500/30 transition-colors font-medium"
                   >
                     Cancelar
                   </button>
@@ -465,26 +513,40 @@ export default function UsuariosPage() {
                       <thead>
                         <tr className="border-b-2 border-primary">
                           <th className="text-left py-3 px-4 font-bold text-primary">Fecha</th>
+                          <th className="text-left py-3 px-4 font-bold text-primary">Evento</th>
                           <th className="text-right py-3 px-4 font-bold text-primary">Monto (Bs.)</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {getUserDeposits(selectedUser._id).map((deposit) => (
-                          <tr key={deposit._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10">
-                            <td className="py-3 px-4">
-                              {new Date(deposit.createdAt).toLocaleDateString('es-ES', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}
-                            </td>
-                            <td className="py-3 px-4 text-right font-medium">
-                              Bs. {deposit.amount.toFixed(2)}
-                            </td>
-                          </tr>
-                        ))}
+                        {getUserDeposits(selectedUser._id).map((deposit) => {
+                          const depositEvent = events.find(e => e._id === deposit.eventId);
+                          return (
+                            <tr key={deposit._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10">
+                              <td className="py-3 px-4">
+                                {new Date(deposit.createdAt).toLocaleDateString('es-ES', {
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}
+                              </td>
+                              <td className="py-3 px-4 text-text-primary">
+                                {depositEvent ? (
+                                  <span className="inline-flex items-center gap-2 bg-accent/20 text-accent px-3 py-1 rounded-full text-sm border border-accent/30">
+                                    <span>{depositEvent.emoji}</span>
+                                    <span>{depositEvent.name}</span>
+                                  </span>
+                                ) : (
+                                  <span className="text-text-secondary text-sm">Evento desconocido</span>
+                                )}
+                              </td>
+                              <td className="py-3 px-4 text-right font-medium text-secondary">
+                                Bs. {deposit.amount.toFixed(2)}
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
 
@@ -504,10 +566,91 @@ export default function UsuariosPage() {
                 )}
               </div>
 
-              <div className="bg-gray-100 p-6 flex justify-end">
+              <div className="bg-bg-card border-t border-cyan-500/30 p-6 flex justify-end">
                 <button
                   onClick={() => setShowDepositModal(false)}
-                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-800"
+                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-800 transition-colors font-semibold"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal de Eventos del Usuario */}
+        {showEventsModal && selectedUser && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-bg-card rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto border border-cyan-500/30">
+              <div className="sticky top-0 bg-accent text-white p-6 flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Eventos de {selectedUser.name}</h2>
+                <button
+                  onClick={() => setShowEventsModal(false)}
+                  className="hover:bg-purple-700 p-2 rounded"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="p-6">
+                <div className="space-y-3">
+                  {events.map((event) => {
+                    const isRegistered = userEvents.some((e) => e._id === event._id);
+                    return (
+                      <div
+                        key={event._id}
+                        className="p-4 border border-accent/30 rounded-lg flex items-center justify-between hover:bg-accent/10 transition"
+                      >
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-2xl">{event.emoji}</span>
+                            <h3 className="font-bold text-text-primary">{event.name}</h3>
+                          </div>
+                          <p className="text-sm text-text-secondary">{event.description}</p>
+                          <p className="text-xs text-accent font-semibold mt-1">Meta: Bs. {event.goal}</p>
+                        </div>
+                        <button
+                          onClick={() =>
+                            isRegistered
+                              ? handleUnregisterEvent(selectedUser._id, event._id)
+                              : handleRegisterEvent(selectedUser._id, event._id)
+                          }
+                          disabled={loadingEventId === event._id}
+                          className={`px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition ${
+                            loadingEventId === event._id
+                              ? 'bg-gray-500/20 text-gray-400 border border-gray-500/50 cursor-not-allowed opacity-50'
+                              : isRegistered
+                              ? 'bg-accent/20 text-accent border border-accent/50 hover:bg-accent/30'
+                              : 'bg-primary/20 text-primary border border-primary/50 hover:bg-primary/30'
+                          }`}
+                        >
+                          {loadingEventId === event._id ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                              Procesando...
+                            </>
+                          ) : isRegistered ? (
+                            <>
+                              <Check size={16} />
+                              Registrado
+                            </>
+                          ) : (
+                            <>
+                              <Plus size={16} />
+                              Registrar
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="bg-bg-card border-t border-cyan-500/30 p-6 flex justify-end">
+                <button
+                  onClick={() => setShowEventsModal(false)}
+                  className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
                 >
                   Cerrar
                 </button>

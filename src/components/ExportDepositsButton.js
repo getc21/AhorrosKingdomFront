@@ -2,13 +2,14 @@ import React from 'react';
 import { Download, Printer } from 'lucide-react';
 import { generateDepositsPDF } from '@/utils/depositsPdfGenerator';
 
-export default function ExportDepositsButton({ user, deposits }) {
+export default function ExportDepositsButton({ user, deposits, eventName }) {
   const handleExportPDF = () => {
     if (!deposits || deposits.length === 0) {
       alert('No hay depósitos para exportar');
       return;
     }
-    generateDepositsPDF(user, deposits);
+    
+    generateDepositsPDF(user, deposits, eventName);
   };
 
   return (

@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import api from '@/lib/api';
+import EventSelector from '@/components/EventSelector';
 import { ArrowLeft, Plus, MessageCircle, Download } from 'lucide-react';
 
 export default function DepositosPage() {
   const router = useRouter();
   const [deposits, setDeposits] = useState([]);
   const [users, setUsers] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [userRegisteredEvents, setUserRegisteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ userId: '', amount: '' });
+  const [formData, setFormData] = useState({ userId: '', amount: '', eventId: '' });
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -25,12 +28,21 @@ export default function DepositosPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [depositsRes, usersRes] = await Promise.all([
+      const [depositsRes, usersRes, eventsRes] = await Promise.all([
         api.get('/deposits'),
         api.get('/users'),
+        api.get('/events'),
       ]);
       setDeposits(depositsRes.data.data || []);
       setUsers(usersRes.data.data || []);
+      setEvents(eventsRes.data.data || []);
+      
+      // Set default event to primary
+      const primaryEvent = (eventsRes.data.data || []).find((e) => e.isPrimary);
+      if (primaryEvent && !formData.eventId) {
+        setFormData((prev) => ({ ...prev, eventId: primaryEvent._id }));
+      }
+      
       setError('');
     } catch (err) {
       console.error('Error fetching data:', err);
@@ -40,9 +52,30 @@ export default function DepositosPage() {
     }
   };
 
+  const handleUserChange = async (userId) => {
+    setFormData({ ...formData, userId, eventId: '' });
+    setUserRegisteredEvents([]);
+    
+    if (!userId) return;
+
+    try {
+      const response = await api.get(`/users/${userId}/events`);
+      const registeredEvents = response.data.data || [];
+      setUserRegisteredEvents(registeredEvents);
+      
+      // Auto-select the first registered event if available
+      if (registeredEvents.length > 0) {
+        setFormData((prev) => ({ ...prev, eventId: registeredEvents[0]._id }));
+      }
+    } catch (err) {
+      console.error('Error fetching user events:', err);
+      setUserRegisteredEvents([]);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.userId || !formData.amount) {
+    if (!formData.userId || !formData.amount || !formData.eventId) {
       setError('Completa todos los campos');
       return;
     }
@@ -52,6 +85,7 @@ export default function DepositosPage() {
       const response = await api.post('/deposits', {
         userId: formData.userId,
         amount: parseFloat(formData.amount),
+        eventId: formData.eventId,
       });
       
       // Si la respuesta contiene whatsappLink, mostrar mensaje con botón
@@ -64,7 +98,7 @@ export default function DepositosPage() {
         }, 500);
       }
       
-      setFormData({ userId: '', amount: '' });
+      setFormData({ userId: '', amount: '', eventId: events.find((e) => e.isPrimary)?._id || '' });
       setShowForm(false);
       await fetchData();
     } catch (err) {
@@ -146,7 +180,7 @@ export default function DepositosPage() {
                   </label>
                   <select
                     value={formData.userId}
-                    onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
+                    onChange={(e) => handleUserChange(e.target.value)}
                     required
                     className="w-full px-4 py-2 bg-bg-main border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
                   >
@@ -157,6 +191,31 @@ export default function DepositosPage() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-1">
+                    Evento
+                  </label>
+                  {formData.userId && userRegisteredEvents.length === 0 ? (
+                    <div className="w-full px-4 py-2 bg-bg-main border border-red-500/30 rounded-lg text-red-400 text-sm">
+                      Este usuario no está registrado en ningún evento
+                    </div>
+                  ) : (
+                    <select
+                      value={formData.eventId}
+                      onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
+                      required
+                      className="w-full px-4 py-2 bg-bg-main border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+                    >
+                      <option value="">Selecciona un evento</option>
+                      {userRegisteredEvents.map((event) => (
+                        <option key={event._id} value={event._id}>
+                          {event.emoji} {event.name}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
 
                 <div>
@@ -206,50 +265,64 @@ export default function DepositosPage() {
                   <tr className="border-b border-cyan-500/30 bg-cyan-500/5">
                     <th className="text-left py-3 px-4 font-semibold text-primary">Fecha</th>
                     <th className="text-left py-3 px-4 font-semibold text-primary">Usuario</th>
+                    <th className="text-left py-3 px-4 font-semibold text-primary">Evento</th>
                     <th className="text-right py-3 px-4 font-semibold text-primary">Monto (Bs.)</th>
                     <th className="text-center py-3 px-4 font-semibold text-primary">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {deposits.map((deposit) => (
-                    <tr key={deposit._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
-                      <td className="py-4 px-4 text-sm text-text-secondary">
-                        {new Date(deposit.createdAt).toLocaleDateString('es-BO')}
-                      </td>
-                      <td className="py-4 px-4 font-medium text-text-primary">
-                        {typeof deposit.userId === 'object' ? deposit.userId?.name : (users.find(u => u._id === deposit.userId)?.name || 'Usuario')}
-                      </td>
-                      <td className="py-4 px-4 text-right font-semibold text-primary">
-                        Bs. {deposit.amount.toFixed(2)}
-                      </td>
-                      <td className="py-4 px-4 text-center space-x-2">
-                        <button
-                          onClick={() => {
-                            const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-                            const link = document.createElement('a');
-                            link.href = `${backendUrl}/api/deposits/${deposit._id}/receipt`;
-                            link.download = `recibo_deposito_${deposit._id}.pdf`;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                          }}
-                          className="inline-flex items-center px-3 py-1 text-sm bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors border border-primary/30"
-                          title="Descargar PDF"
-                        >
-                          <Download size={14} />
-                        </button>
-                        {deposit.whatsappLink && (
+                  {deposits.map((deposit) => {
+                    const depositEvent = events.find(e => e._id === deposit.eventId);
+                    return (
+                      <tr key={deposit._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
+                        <td className="py-4 px-4 text-sm text-text-secondary">
+                          {new Date(deposit.createdAt).toLocaleDateString('es-BO')}
+                        </td>
+                        <td className="py-4 px-4 font-medium text-text-primary">
+                          {typeof deposit.userId === 'object' ? deposit.userId?.name : (users.find(u => u._id === deposit.userId)?.name || 'Usuario')}
+                        </td>
+                        <td className="py-4 px-4 text-text-primary">
+                          {depositEvent ? (
+                            <span className="inline-flex items-center gap-2 bg-accent/20 text-accent px-3 py-1 rounded-full text-sm border border-accent/30">
+                              <span>{depositEvent.emoji}</span>
+                              <span>{depositEvent.name}</span>
+                            </span>
+                          ) : (
+                            <span className="text-text-secondary text-sm">Evento desconocido</span>
+                          )}
+                        </td>
+                        <td className="py-4 px-4 text-right font-semibold text-secondary">
+                          Bs. {deposit.amount.toFixed(2)}
+                        </td>
+                        <td className="py-4 px-4 text-center space-x-2">
                           <button
-                            onClick={() => window.open(deposit.whatsappLink, '_blank')}
-                            className="inline-flex items-center px-3 py-1 text-sm bg-secondary/20 text-secondary rounded hover:bg-secondary/30 transition-colors border border-secondary/30"
-                            title="Enviar por WhatsApp"
+                            onClick={() => {
+                              const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+                              const link = document.createElement('a');
+                              link.href = `${backendUrl}/api/deposits/${deposit._id}/receipt`;
+                              link.download = `recibo_deposito_${deposit._id}.pdf`;
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                            }}
+                            className="inline-flex items-center px-3 py-1 text-sm bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors border border-primary/30"
+                            title="Descargar PDF"
                           >
-                            <MessageCircle size={14} />
+                            <Download size={14} />
                           </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                          {deposit.whatsappLink && (
+                            <button
+                              onClick={() => window.open(deposit.whatsappLink, '_blank')}
+                              className="inline-flex items-center px-3 py-1 text-sm bg-secondary/20 text-secondary rounded hover:bg-secondary/30 transition-colors border border-secondary/30"
+                              title="Enviar por WhatsApp"
+                            >
+                              <MessageCircle size={14} />
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

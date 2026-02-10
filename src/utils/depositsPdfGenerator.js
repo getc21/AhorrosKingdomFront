@@ -3,7 +3,7 @@
  * Usa html2pdf para convertir a PDF con estilos mejorados
  */
 
-export const generateDepositsPDF = async (user, deposits) => {
+export const generateDepositsPDF = async (user, deposits, eventName = 'Todos los eventos') => {
   try {
     const html2pdf = (await import('html2pdf.js')).default;
     
@@ -30,8 +30,8 @@ export const generateDepositsPDF = async (user, deposits) => {
             <div style="font-size: 16px; font-weight: bold; color: #00B4D8;">${user.phone || 'N/A'}</div>
           </div>
           <div style="background: linear-gradient(135deg, #9D4EDD15 0%, #9D4EDD08 100%); border-left: 4px solid #9D4EDD; padding: 15px; border-radius: 5px;">
-            <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Plan</div>
-            <div style="font-size: 14px; font-weight: bold; color: #9D4EDD;">${user.planType || 'N/A'}</div>
+            <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Evento</div>
+            <div style="font-size: 14px; font-weight: bold; color: #9D4EDD;">${eventName}</div>
           </div>
           <div style="background: linear-gradient(135deg, #00D4FF08 0%, #00D4FF04 100%); border-left: 4px solid #00B4D8; padding: 15px; border-radius: 5px;">
             <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Total Depósitos</div>
@@ -50,6 +50,7 @@ export const generateDepositsPDF = async (user, deposits) => {
               <tr style="background: linear-gradient(135deg, #00D4FF 0%, #00B4D8 100%); color: #0F172A;">
                 <th style="padding: 15px 12px; text-align: center; font-weight: bold; font-size: 13px;">Nº</th>
                 <th style="padding: 15px 12px; text-align: left; font-weight: bold; font-size: 13px;">Fecha</th>
+                <th style="padding: 15px 12px; text-align: left; font-weight: bold; font-size: 13px;">Evento</th>
                 <th style="padding: 15px 12px; text-align: left; font-weight: bold; font-size: 13px;">Descripción</th>
                 <th style="padding: 15px 12px; text-align: right; font-weight: bold; font-size: 13px;">Monto (Bs.)</th>
               </tr>
@@ -61,6 +62,7 @@ export const generateDepositsPDF = async (user, deposits) => {
                 <tr style="border-bottom: 1px solid #E5E7EB; background: ${idx % 2 === 0 ? '#ffffff' : '#F9FAFB'};">
                   <td style="padding: 12px; text-align: center; color: #666; font-weight: 600;">${idx + 1}</td>
                   <td style="padding: 12px; color: #666; font-size: 13px;">${new Date(deposit.date || deposit.createdAt).toLocaleDateString('es-BO')}</td>
+                  <td style="padding: 12px; color: #333; font-size: 13px;">${deposit.eventEmoji || ''} ${deposit.eventName || '-'}</td>
                   <td style="padding: 12px; color: #333; font-size: 13px;">${deposit.description || '-'}</td>
                   <td style="padding: 12px; text-align: right; font-weight: bold; color: #00B4D8; font-size: 14px;">Bs. ${deposit.amount.toFixed(2)}</td>
                 </tr>

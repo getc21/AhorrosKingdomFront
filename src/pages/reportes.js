@@ -35,15 +35,17 @@ export default function ReportesPage() {
   const fetchReportData = async () => {
     try {
       setLoading(true);
-      const [usersRes, depositsRes, dashboardRes] = await Promise.all([
+      const [usersRes, depositsRes, dashboardRes, eventsRes] = await Promise.all([
         api.get('/users'),
         api.get('/deposits'),
         api.get('/dashboard/me'),
+        api.get('/events'),
       ]);
 
       const users = usersRes.data.data || [];
       const deposits = depositsRes.data.data || [];
       const dashboardInfo = dashboardRes.data.data || {};
+      const events = eventsRes.data.data || [];
 
       // Procesar datos para estadísticas
       const totalUsers = users.length;
@@ -52,27 +54,41 @@ export default function ReportesPage() {
       const totalAmount = deposits.reduce((sum, d) => sum + (d.amount || 0), 0);
       const averageDeposit = totalDeposits > 0 ? totalAmount / totalDeposits : 0;
 
-      // Estadísticas por plan
-      const planStats = {};
-      users.forEach(user => {
-        const plan = user.planType || 'Sin Plan';
-        if (!planStats[plan]) {
-          planStats[plan] = { name: plan, users: 0, totalSaved: 0 };
-        }
-        planStats[plan].users += 1;
+      // Estadísticas por evento
+      const eventStats = {};
+      events.forEach(event => {
+        eventStats[event._id] = { 
+          name: `${event.emoji} ${event.name}`,
+          goal: event.goal,
+          deposits: 0,
+          totalSaved: 0,
+          users: new Set(),
+        };
       });
 
+      // Agrupar depósitos por evento
       deposits.forEach(deposit => {
-        if (deposit.userId) {
-          const userId = typeof deposit.userId === 'object' ? deposit.userId._id : deposit.userId;
-          const userPlan = users.find(u => u._id === userId)?.planType || 'Sin Plan';
-          if (planStats[userPlan]) {
-            planStats[userPlan].totalSaved += deposit.amount || 0;
+        if (deposit.eventId) {
+          const eventId = typeof deposit.eventId === 'object' ? deposit.eventId._id : deposit.eventId;
+          if (eventStats[eventId]) {
+            eventStats[eventId].deposits += 1;
+            eventStats[eventId].totalSaved += deposit.amount || 0;
+            
+            // Contar usuarios únicos
+            const userId = typeof deposit.userId === 'object' ? deposit.userId._id : deposit.userId;
+            eventStats[eventId].users.add(userId);
           }
         }
       });
 
-      const planData = Object.values(planStats);
+      // Convertir Set a número y crear array
+      const eventData = Object.values(eventStats).map(event => ({
+        name: event.name,
+        goal: event.goal,
+        deposits: event.deposits,
+        totalSaved: event.totalSaved,
+        uniqueUsers: event.users.size,
+      }));
 
       // Depósitos por mes (últimos 6 meses)
       const monthlyDeposits = {};
@@ -96,19 +112,13 @@ export default function ReportesPage() {
 
       const monthlyData = Object.values(monthlyDeposits);
 
-      // Usuarios por estado
-      const statusData = [
-        {
-          name: 'Activos',
-          value: activeUsers,
-          color: '#10b981',
-        },
-        {
-          name: 'Inactivos',
-          value: totalUsers - activeUsers,
-          color: '#ef4444',
-        },
-      ];
+      // Dinero total por evento para el pie chart
+      const eventMoneyColors = ['#00D4FF', '#00B4D8', '#9D4EDD', '#A78BFA', '#F472B6', '#FB923C', '#10B981', '#06B6D4'];
+      const eventMoneyData = eventData.map((event, index) => ({
+        name: event.name,
+        value: parseFloat(event.totalSaved.toFixed(2)),
+        color: eventMoneyColors[index % eventMoneyColors.length],
+      }));
 
       setReportData({
         totalUsers,
@@ -116,9 +126,9 @@ export default function ReportesPage() {
         totalDeposits,
         totalAmount,
         averageDeposit,
-        planData,
+        eventData,
         monthlyData,
-        statusData,
+        eventMoneyData,
         dashboardInfo,
       });
       setError('');
@@ -257,59 +267,89 @@ export default function ReportesPage() {
                 </ResponsiveContainer>
               </div>
 
-              {/* Usuarios por Estado */}
+              {/* Dinero Total por Evento */}
               <div className="card">
-                <h2 className="text-xl font-bold text-primary mb-4">Usuarios por Estado</h2>
+                <h2 className="text-xl font-bold text-primary mb-4">💰 Dinero Total por Evento</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={reportData.statusData}
+                      data={reportData.eventMoneyData}
                       cx="50%"
                       cy="50%"
-                      labelLine={false}
-                      label={({ name, value }) => `${name}: ${value}`}
                       outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
                     >
-                      {reportData.statusData.map((entry, index) => (
+                      {reportData.eventMoneyData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
                     <Tooltip 
                       contentStyle={{ backgroundColor: '#1E293B', border: '1px solid #00D4FF', borderRadius: '8px', color: '#F1F5F9' }}
                       labelStyle={{ color: '#F1F5F9' }}
+                      formatter={(value) => `Bs. ${value.toFixed(2)}`}
+                      labelFormatter={(label) => label}
                     />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Plan Statistics Table */}
-            {reportData.planData.length > 0 && (
+            {/* Event Statistics Table */}
+            {reportData.eventData.length > 0 && (
               <div className="card">
-                <h2 className="text-xl font-bold text-primary mb-4">Estadísticas por Plan</h2>
+                <h2 className="text-xl font-bold text-primary mb-4">📅 Estadísticas por Evento</h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b-2 border-cyan-500/30 bg-cyan-500/5">
-                        <th className="text-left py-3 px-4 font-bold text-primary">Plan</th>
+                        <th className="text-left py-3 px-4 font-bold text-primary">Evento</th>
+                        <th className="text-center py-3 px-4 font-bold text-primary">Depósitos</th>
                         <th className="text-center py-3 px-4 font-bold text-primary">Usuarios</th>
                         <th className="text-right py-3 px-4 font-bold text-primary">Total Ahorrado (Bs.)</th>
-                        <th className="text-right py-3 px-4 font-bold text-primary">Promedio por Usuario (Bs.)</th>
+                        <th className="text-right py-3 px-4 font-bold text-primary">Progreso %</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {reportData.planData.map((plan, index) => (
-                        <tr key={index} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
-                          <td className="py-3 px-4 font-medium text-text-primary">{plan.name}</td>
-                          <td className="text-center py-3 px-4 text-text-secondary">{plan.users}</td>
-                          <td className="text-right py-3 px-4 text-primary font-semibold">Bs. {plan.totalSaved.toFixed(2)}</td>
-                          <td className="text-right py-3 px-4 text-primary font-semibold">
-                            Bs. {(plan.totalSaved / plan.users).toFixed(2)}
-                          </td>
-                        </tr>
-                      ))}
+                      {reportData.eventData.map((event, index) => {
+                        const progress = event.goal > 0 ? ((event.totalSaved / event.goal) * 100).toFixed(2) : 0;
+                        return (
+                          <tr key={index} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
+                            <td className="py-3 px-4 font-medium text-text-primary">{event.name}</td>
+                            <td className="text-center py-3 px-4 text-secondary font-semibold">{event.deposits}</td>
+                            <td className="text-center py-3 px-4 text-primary font-semibold">{event.uniqueUsers}</td>
+                            <td className="text-right py-3 px-4 text-secondary font-semibold">Bs. {event.totalSaved.toFixed(2)}</td>
+                            <td className="text-right py-3 px-4">
+                              <div className="flex items-center justify-end gap-2">
+                                <div className="w-20 bg-primary/10 rounded-full h-2 border border-primary/20">
+                                  <div 
+                                    className="bg-gradient-btn h-2 rounded-full transition-all"
+                                    style={{ width: `${Math.min(progress, 100)}%` }}
+                                  ></div>
+                                </div>
+                                <span className="text-xs font-semibold text-text-secondary w-10 text-right">{progress}%</span>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {/* Row with totals */}
+                      <tr className="border-t-2 border-cyan-500/30 bg-cyan-500/5 font-bold">
+                        <td className="py-3 px-4 text-primary">TOTAL DEL SISTEMA</td>
+                        <td className="text-center py-3 px-4 text-secondary">{reportData.totalDeposits}</td>
+                        <td className="text-center py-3 px-4 text-primary">{reportData.totalUsers}</td>
+                        <td className="text-right py-3 px-4 text-secondary">Bs. {reportData.totalAmount.toFixed(2)}</td>
+                        <td className="text-right py-3 px-4">
+                          <div className="flex items-center justify-end gap-2">
+                            <span className="text-xs font-semibold text-text-secondary">
+                              {reportData.eventData.reduce((sum, e) => sum + e.goal, 0) > 0 
+                                ? ((reportData.totalAmount / reportData.eventData.reduce((sum, e) => sum + e.goal, 0)) * 100).toFixed(2)
+                                : 0
+                              }%
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>

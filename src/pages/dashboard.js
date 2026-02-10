@@ -5,6 +5,7 @@ import BadgesList from '@/components/BadgesList';
 import DepositFilters from '@/components/DepositFilters';
 import ExportDepositsButton from '@/components/ExportDepositsButton';
 import DepositCalendar from '@/components/DepositCalendar';
+import EventSelector from '@/components/EventSelector';
 import Alert from '@/components/Alert';
 import api from '@/lib/api';
 import { useToast } from '@/contexts/ToastContext';
@@ -127,12 +128,24 @@ export default function DashboardPage() {
   const [filteredDeposits, setFilteredDeposits] = useState([]);
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const [events, setEvents] = useState([]);
   
   // Password change states
   const [showPwdModal, setShowPwdModal] = useState(false);
   const [pwdData, setPwdData] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
   const [pwdLoading, setPwdLoading] = useState(false);
   const [pwdError, setPwdError] = useState('');
+
+  // Función para cargar eventos
+  const fetchEvents = async () => {
+    try {
+      const response = await api.get('/events');
+      setEvents(response.data.data || []);
+    } catch (err) {
+      console.error('Error fetching events:', err);
+    }
+  };
 
   useEffect(() => {
     // Verificar si hay token
@@ -148,6 +161,9 @@ export default function DashboardPage() {
       const parsedUser = JSON.parse(userData);
       console.log('User loaded in Dashboard:', parsedUser);
       setUser(parsedUser);
+      
+      // Cargar eventos para todos los usuarios
+      fetchEvents();
       
       // Cargar usuarios si es admin
       if (parsedUser.role === 'ADMIN') {
@@ -172,6 +188,16 @@ export default function DashboardPage() {
     
     fetchDashboard();
   }, [router]);
+
+  // Re-fetch when event selection changes
+  useEffect(() => {
+    if (selectedEventId !== null) {
+      fetchDashboard();
+      if (user?.role === 'ADMIN') {
+        fetchUsers();
+      }
+    }
+  }, [selectedEventId]);
 
   const handleSkipPwdChange = async () => {
     try {
@@ -232,7 +258,10 @@ export default function DashboardPage() {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/dashboard/me');
+      const url = selectedEventId 
+        ? `/dashboard/me?eventId=${selectedEventId}` 
+        : '/dashboard/me';
+      const response = await api.get(url);
       setDashboard(response.data.data);
       setError('');
       
@@ -253,7 +282,10 @@ export default function DashboardPage() {
 
   const fetchBadges = async () => {
     try {
-      const response = await api.get('/dashboard/badges/my');
+      const url = selectedEventId 
+        ? `/dashboard/badges/my?eventId=${selectedEventId}` 
+        : '/dashboard/badges/my';
+      const response = await api.get(url);
       setBadges(response.data.data.badges || []);
     } catch (err) {
       console.error('Error fetching badges:', err);
@@ -264,7 +296,10 @@ export default function DashboardPage() {
   const fetchUsers = async () => {
     try {
       setUsersLoading(true);
-      const response = await api.get('/dashboard/ranking');
+      const url = selectedEventId 
+        ? `/dashboard/ranking?eventId=${selectedEventId}` 
+        : '/dashboard/ranking';
+      const response = await api.get(url);
       setUsers(response.data.data || []);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -447,10 +482,17 @@ export default function DashboardPage() {
                   <p className="text-sm text-text-secondary">Crear, ver y gestionar depósitos</p>
                 </button>
                 <button 
-                  onClick={() => router.push('/reportes')}
+                  onClick={() => router.push('/eventos')}
                   className="p-4 border-2 border-accent rounded-lg hover:bg-accent/10 hover:border-accent/80 transition-all duration-300 text-left group"
                 >
-                  <h3 className="font-bold text-accent mb-1 group-hover:text-primary transition-colors">📈 Reportes</h3>
+                  <h3 className="font-bold text-accent mb-1 group-hover:text-primary transition-colors">🎪 Gestionar Eventos</h3>
+                  <p className="text-sm text-text-secondary">Crear y gestionar eventos de ahorro</p>
+                </button>
+                <button 
+                  onClick={() => router.push('/reportes')}
+                  className="p-4 border-2 border-secondary rounded-lg hover:bg-secondary/10 hover:border-secondary/80 transition-all duration-300 text-left group"
+                >
+                  <h3 className="font-bold text-secondary mb-1 group-hover:text-primary transition-colors">📈 Reportes</h3>
                   <p className="text-sm text-text-secondary">Ver estadísticas y reportes del programa</p>
                 </button>
               </div>
@@ -480,7 +522,7 @@ export default function DashboardPage() {
 
             {/* Tabla de Usuarios */}
             <div className="card">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3 sm:gap-0">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4 md:gap-0">
                 <h2 className="text-2xl font-bold text-primary">👥 Resumen de Usuarios</h2>
                 <button
                   onClick={generateUsersPDF}
@@ -491,6 +533,25 @@ export default function DashboardPage() {
                   <Download size={20} />
                   <span>Descargar PDF</span>
                 </button>
+              </div>
+
+              {/* Dropdown de Eventos */}
+              <div className="mb-6 max-w-md">
+                <label className="block text-sm font-semibold text-text-primary mb-2">
+                  Filtrar por Evento
+                </label>
+                <select
+                  value={selectedEventId || ''}
+                  onChange={(e) => setSelectedEventId(e.target.value || null)}
+                  className="w-full px-4 py-2 bg-bg-card border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+                >
+                  <option value="">Todos los eventos</option>
+                  {events.map((event) => (
+                    <option key={event._id} value={event._id}>
+                      {event.emoji} {event.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               {usersLoading ? (
                 <div className="text-center py-8">
@@ -569,6 +630,17 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-bg-main py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-primary mb-8">📊 Mi Dashboard</h1>
+
+        {/* Event Selector */}
+        <div className="mb-8 max-w-md">
+          <label className="block text-sm font-semibold text-primary mb-2">
+            Selecciona un Evento
+          </label>
+          <EventSelector 
+            selectedEventId={selectedEventId} 
+            onEventChange={setSelectedEventId}
+          />
+        </div>
 
         {error && <Alert type="error" message={error} className="mb-6" />}
 
@@ -686,6 +758,11 @@ export default function DashboardPage() {
                     <ExportDepositsButton 
                       user={user} 
                       deposits={dashboard.depositHistory}
+                      eventName={
+                        selectedEventId && events && events.length > 0
+                          ? events.find(e => e._id.toString() === selectedEventId.toString())?.name || 'Todos los eventos'
+                          : 'Todos los eventos'
+                      }
                     />
                   )}
                 </div>
