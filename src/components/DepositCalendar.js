@@ -58,16 +58,16 @@ export default function DepositCalendar({ deposits = [] }) {
         <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2">
           <button
             onClick={prevMonth}
-            className="p-1.5 sm:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+            className="p-1.5 sm:p-2 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"
           >
-            <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
+            <ChevronLeft size={18} className="sm:w-5 sm:h-5 text-primary" />
           </button>
           <h3 className="text-sm sm:text-lg font-semibold capitalize text-primary text-center flex-1">{monthName}</h3>
           <button
             onClick={nextMonth}
-            className="p-1.5 sm:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+            className="p-1.5 sm:p-2 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"
           >
-            <ChevronRight size={18} className="sm:w-5 sm:h-5" />
+            <ChevronRight size={18} className="sm:w-5 sm:h-5 text-primary" />
           </button>
         </div>
 
@@ -105,25 +105,27 @@ export default function DepositCalendar({ deposits = [] }) {
                 key={index}
                 className={`
                   aspect-square rounded-lg p-1 sm:p-2 flex flex-col items-center justify-center text-center relative
-                  transition-all cursor-pointer text-xs sm:text-sm
+                  transition-all duration-200 cursor-pointer text-xs sm:text-sm font-semibold
                   ${!day ? 'bg-transparent' : ''}
-                  ${hasDeposits ? 'bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 border-2 border-secondary' : 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'}
-                  ${isToday ? 'ring-2 ring-primary' : ''}
-                  hover:shadow-md
+                  ${hasDeposits 
+                    ? 'bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-primary/30 dark:to-secondary/30 border-2 border-primary/50 dark:border-primary/60 hover:from-primary/30 hover:to-secondary/30 hover:border-primary hover:shadow-lg hover:shadow-primary/30' 
+                    : 'bg-bg-card/50 dark:bg-gray-800/30 border border-primary/10 dark:border-primary/20 hover:bg-bg-card/80 hover:border-primary/30 hover:shadow-md'
+                  }
+                  ${isToday ? 'ring-2 ring-primary ring-opacity-75' : ''}
                 `}
                 title={hasDeposits ? `${depositsCount} depósito(s): Bs. ${totalAmount.toFixed(2)}` : 'Sin depósitos'}
               >
                 {day && (
                   <>
-                    <span className={`text-xs sm:text-sm font-semibold ${hasDeposits ? 'text-secondary dark:text-green-200' : 'text-text-secondary dark:text-gray-400'}`}>
+                    <span className={`text-xs sm:text-sm font-bold ${hasDeposits ? 'text-primary dark:text-primary' : 'text-text-secondary/70 dark:text-gray-500'}`}>
                       {day}
                     </span>
                     {hasDeposits && (
                       <>
-                        <span className="text-xs text-secondary dark:text-green-200 font-bold">
-                          {depositsCount}
+                        <span className="text-xs text-secondary dark:text-secondary font-bold leading-tight">
+                          {depositsCount}x
                         </span>
-                        <span className="text-xs text-secondary dark:text-green-200 font-bold hidden sm:inline">
+                        <span className="text-xs text-primary dark:text-primary font-bold hidden sm:inline leading-tight">
                           Bs. {totalAmount.toFixed(0)}
                         </span>
                       </>
@@ -137,19 +139,19 @@ export default function DepositCalendar({ deposits = [] }) {
       </div>
 
       {/* Legend */}
-      <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+      <div className="border-t border-primary/20 pt-6 mt-6">
         <h4 className="font-semibold text-primary mb-3">📊 Leyenda</h4>
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 border-2 border-secondary rounded"></div>
+            <div className="w-6 h-6 bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-primary/30 dark:to-secondary/30 border-2 border-primary/50 rounded"></div>
             <span className="text-sm text-text-secondary">Día con depósito</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded"></div>
+            <div className="w-6 h-6 bg-bg-card/50 dark:bg-gray-800/30 border border-primary/10 dark:border-primary/20 rounded"></div>
             <span className="text-sm text-text-secondary">Día sin depósito</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 ring-2 ring-primary bg-white dark:bg-gray-800 rounded"></div>
+            <div className="w-6 h-6 ring-2 ring-primary ring-opacity-75 bg-bg-card dark:bg-gray-800 rounded"></div>
             <span className="text-sm text-text-secondary">Hoy</span>
           </div>
         </div>
@@ -157,11 +159,11 @@ export default function DepositCalendar({ deposits = [] }) {
 
       {/* Monthly Summary */}
       {deposits.length > 0 && (
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
+        <div className="border-t border-primary/20 pt-6 mt-6">
           <h4 className="font-semibold text-primary mb-3">📈 Resumen del Mes</h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <div className="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
-              <p className="text-xs text-text-secondary mb-1">Depósitos</p>
+            <div className="bg-gradient-to-br from-primary/15 to-primary/5 dark:from-primary/25 dark:to-primary/10 p-4 rounded-lg border border-primary/30">
+              <p className="text-xs text-text-secondary mb-1 font-medium">Depósitos</p>
               <p className="text-lg font-bold text-primary">
                 {
                   Object.entries(depositsByDate)
@@ -176,8 +178,8 @@ export default function DepositCalendar({ deposits = [] }) {
                 }
               </p>
             </div>
-            <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg">
-              <p className="text-xs text-text-secondary mb-1">Total Ahorrado</p>
+            <div className="bg-gradient-to-br from-secondary/15 to-secondary/5 dark:from-secondary/25 dark:to-secondary/10 p-4 rounded-lg border border-secondary/30">
+              <p className="text-xs text-text-secondary mb-1 font-medium">Total Ahorrado</p>
               <p className="text-lg font-bold text-secondary">
                 Bs. {
                   Object.entries(depositsByDate)
@@ -193,8 +195,8 @@ export default function DepositCalendar({ deposits = [] }) {
                 }
               </p>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg">
-              <p className="text-xs text-text-secondary mb-1">Promedio</p>
+            <div className="bg-gradient-to-br from-accent/15 to-accent/5 dark:from-accent/25 dark:to-accent/10 p-4 rounded-lg border border-accent/30">
+              <p className="text-xs text-text-secondary mb-1 font-medium">Promedio</p>
               <p className="text-lg font-bold text-accent">
                 Bs. {
                   (() => {

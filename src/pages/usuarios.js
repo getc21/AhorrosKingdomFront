@@ -175,7 +175,7 @@ export default function UsuariosPage() {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center space-x-2 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-green-700 transition-colors shadow-md"
+            className="flex items-center space-x-2 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 shadow-md\"
           >
             <UserPlus size={20} />
             <span>Nuevo Usuario</span>
@@ -188,12 +188,12 @@ export default function UsuariosPage() {
             placeholder="Buscar por nombre o teléfono..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+            className="w-full md:w-96 px-4 py-2 bg-bg-card border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled shadow-sm"
           />
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-100 text-red-700 rounded">
+          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 text-red-300 rounded">
             {error}
           </div>
         )}
@@ -203,19 +203,19 @@ export default function UsuariosPage() {
             <div className="overflow-x-auto -mx-4 sm:mx-0">
               <table className="w-full min-w-max text-sm sm:text-base">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-text-secondary">Nombre</th>
-                    <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-text-secondary">Teléfono</th>
-                    <th className="hidden sm:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-text-secondary">Plan</th>
-                    <th className="hidden md:table-cell text-right py-2 sm:py-3 px-3 sm:px-4 font-semibold text-text-secondary">Ahorrado (Bs.)</th>
-                    <th className="hidden lg:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-text-secondary">Rol</th>
-                    <th className="hidden sm:table-cell text-center py-2 sm:py-3 px-3 sm:px-4 font-semibold text-text-secondary">Estado</th>
-                    <th className="text-center py-2 sm:py-3 px-3 sm:px-4 font-semibold text-text-secondary">Acciones</th>
+                  <tr className="border-b border-cyan-500/30 bg-cyan-500/5">
+                    <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Nombre</th>
+                    <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Teléfono</th>
+                    <th className="hidden sm:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Plan</th>
+                    <th className="hidden md:table-cell text-right py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Ahorrado (Bs.)</th>
+                    <th className="hidden lg:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Rol</th>
+                    <th className="hidden sm:table-cell text-center py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Estado</th>
+                    <th className="text-center py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredUsers.map((user) => (
-                    <tr key={user._id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={user._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
                       {editingId === user._id ? (
                         <>
                           <td className="py-2 sm:py-4 px-3 sm:px-4">
@@ -223,7 +223,7 @@ export default function UsuariosPage() {
                               type="text"
                               value={editData.name}
                               onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                              className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                              className="w-full px-2 py-1 text-sm bg-bg-card border border-cyan-500/30 rounded text-text-primary focus:ring-cyan-500 focus:border-cyan-500"
                             />
                           </td>
                           <td className="py-2 sm:py-4 px-3 sm:px-4 text-text-secondary text-sm">{user.phone}</td>
@@ -231,7 +231,7 @@ export default function UsuariosPage() {
                             <select
                               value={editData.planType}
                               onChange={(e) => setEditData({ ...editData, planType: e.target.value })}
-                              className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                              className="w-full px-2 py-1 text-sm bg-bg-card border border-cyan-500/30 rounded text-text-primary focus:ring-cyan-500 focus:border-cyan-500"
                             >
                               <option value="Ahorro Campamento 2027">Ahorro Campamento 2027</option>
                               <option value="Ahorro Otras Actividades">Ahorro Otras Actividades</option>
@@ -241,7 +241,7 @@ export default function UsuariosPage() {
                             <span className="text-secondary text-sm">Bs. {getUserTotalSavings(user._id).toFixed(2)}</span>
                           </td>
                           <td className="hidden lg:table-cell py-2 sm:py-4 px-3 sm:px-4">
-                            <span className="px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800">
+                            <span className="px-2 py-1 rounded text-xs font-medium bg-accent/20 text-accent border border-accent/30">
                               {user.role}
                             </span>
                           </td>
@@ -249,7 +249,7 @@ export default function UsuariosPage() {
                             <select
                               value={editData.isActive}
                               onChange={(e) => setEditData({ ...editData, isActive: e.target.value === 'true' })}
-                              className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                              className="w-full px-2 py-1 text-sm bg-bg-card border border-cyan-500/30 rounded text-text-primary focus:ring-cyan-500 focus:border-cyan-500"
                             >
                               <option value="true">Activo</option>
                               <option value="false">Inactivo</option>
@@ -259,13 +259,13 @@ export default function UsuariosPage() {
                             <button
                               onClick={() => handleSaveEdit(user._id)}
                               disabled={submitting}
-                              className="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+                              className="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-secondary text-white rounded hover:shadow-lg hover:shadow-secondary/50 disabled:opacity-50 transition-all duration-300"
                             >
                               Guardar
                             </button>
                             <button
                               onClick={() => setEditingId(null)}
-                              className="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-gray-400 text-white rounded hover:bg-gray-500"
+                              className="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-text-secondary text-bg-main rounded hover:bg-text-secondary/80 transition-all duration-300"
                             >
                               Cancelar
                             </button>
@@ -280,19 +280,19 @@ export default function UsuariosPage() {
                             <span className="text-secondary text-sm">Bs. {getUserTotalSavings(user._id).toFixed(2)}</span>
                           </td>
                           <td className="hidden lg:table-cell py-2 sm:py-4 px-3 sm:px-4">
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            <span className={`px-2 py-1 rounded text-xs font-medium border ${
                               user.role === 'ADMIN' 
-                                ? 'bg-purple-100 text-purple-800' 
-                                : 'bg-blue-100 text-blue-800'
+                                ? 'bg-accent/20 text-accent border-accent/30' 
+                                : 'bg-secondary/20 text-secondary border-secondary/30'
                             }`}>
                               {user.role}
                             </span>
                           </td>
                           <td className="hidden sm:table-cell py-2 sm:py-4 px-3 sm:px-4 text-center">
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            <span className={`px-2 py-1 rounded text-xs font-medium border ${
                               user.isActive
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-red-100 text-red-800'
+                                ? 'bg-secondary/20 text-secondary border-secondary/30'
+                                : 'bg-red-500/20 text-red-400 border-red-500/30'
                             }`}>
                               {user.isActive ? 'Activo' : 'Inactivo'}
                             </span>
@@ -301,31 +301,31 @@ export default function UsuariosPage() {
                             <div className="flex justify-center">
                               <button
                                 onClick={() => setOpenMenuId(openMenuId === user._id ? null : user._id)}
-                                className="p-2 hover:bg-gray-200 rounded-full"
+                                className="p-2 hover:bg-cyan-500/20 rounded-full transition-colors"
                               >
-                                <MoreVertical size={18} />
+                                <MoreVertical size={18} className="text-primary" />
                               </button>
                               
                               {/* Menú desplegable */}
                               {openMenuId === user._id && (
-                                <div className="absolute right-0 mt-8 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                                <div className="absolute right-0 mt-8 w-48 bg-bg-card border border-cyan-500/30 rounded-lg shadow-lg shadow-cyan-500/10 z-10">
                                   <button
                                     onClick={() => handleViewDeposits(user)}
-                                    className="block w-full text-left px-4 py-2 hover:bg-green-50 text-green-700 flex items-center"
+                                    className="block w-full text-left px-4 py-2 hover:bg-secondary/10 text-secondary flex items-center transition-colors"
                                   >
                                     <Eye size={14} className="mr-2" />
                                     Ver Depósitos
                                   </button>
                                   <button
                                     onClick={() => handleEdit(user)}
-                                    className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-blue-700 flex items-center border-t border-gray-200"
+                                    className="block w-full text-left px-4 py-2 hover:bg-primary/10 text-primary flex items-center border-t border-cyan-500/20 transition-colors"
                                   >
                                     <Edit2 size={14} className="mr-2" />
                                     Editar
                                   </button>
                                   <button
                                     onClick={() => handleDelete(user._id)}
-                                    className="block w-full text-left px-4 py-2 hover:bg-red-50 text-red-700 flex items-center border-t border-gray-200"
+                                    className="block w-full text-left px-4 py-2 hover:bg-red-500/10 text-red-400 flex items-center border-t border-cyan-500/20 transition-colors"
                                   >
                                     <Trash2 size={14} className="mr-2" />
                                     Eliminar
@@ -351,7 +351,7 @@ export default function UsuariosPage() {
         {/* Modal para Agregar Usuario */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg max-w-md w-full overflow-hidden shadow-2xl">
+            <div className="bg-bg-card rounded-lg max-w-md w-full overflow-hidden shadow-2xl border border-cyan-500/30">
               <div className="bg-primary text-white p-6 flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Registrar Usuario</h2>
                 <button onClick={() => setShowAddModal(false)} className="hover:bg-blue-700 p-1 rounded transition-colors">
@@ -447,7 +447,7 @@ export default function UsuariosPage() {
         {/* Modal de Depósitos */}
         {showDepositModal && selectedUser && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div className="bg-bg-card rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto border border-cyan-500/30">
               <div className="sticky top-0 bg-primary text-white p-6 flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Depósitos de {selectedUser.name}</h2>
                 <button
@@ -470,7 +470,7 @@ export default function UsuariosPage() {
                       </thead>
                       <tbody>
                         {getUserDeposits(selectedUser._id).map((deposit) => (
-                          <tr key={deposit._id} className="border-b border-gray-200 hover:bg-gray-50">
+                          <tr key={deposit._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10">
                             <td className="py-3 px-4">
                               {new Date(deposit.createdAt).toLocaleDateString('es-ES', {
                                 year: 'numeric',

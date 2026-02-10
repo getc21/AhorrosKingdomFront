@@ -4,10 +4,10 @@ import { AlertCircle, CheckCircle, Info } from 'lucide-react';
 
 export default function Alert({ type = 'info', title, message, children }) {
   const styles = {
-    info: 'bg-blue-50 border-blue-200 text-blue-800',
-    success: 'bg-green-50 border-green-200 text-green-800',
-    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
-    error: 'bg-red-50 border-red-200 text-red-800',
+    info: 'bg-gradient-to-r from-primary/15 to-primary/5 dark:from-primary/25 dark:to-primary/10 border-primary/30 dark:border-primary/40 text-primary',
+    success: 'bg-gradient-to-r from-accent/15 to-accent/5 dark:from-accent/25 dark:to-accent/10 border-accent/30 dark:border-accent/40 text-accent',
+    warning: 'bg-gradient-to-r from-secondary/15 to-secondary/5 dark:from-secondary/25 dark:to-secondary/10 border-secondary/30 dark:border-secondary/40 text-secondary',
+    error: 'bg-gradient-to-r from-red-50/100 to-red-50/50 dark:from-red-900/30 dark:to-red-900/10 border-red-200 dark:border-red-700 text-red-700 dark:text-red-300',
   };
 
   const icons = {

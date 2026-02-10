@@ -112,7 +112,7 @@ export default function DepositosPage() {
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="flex items-center space-x-2 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-green-700"
+            className="flex items-center space-x-2 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300"
           >
             <Plus size={20} />
             <span>Nuevo Depósito</span>
@@ -120,20 +120,20 @@ export default function DepositosPage() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-100 text-red-700 rounded">
+          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 text-red-300 rounded">
             {error}
           </div>
         )}
 
         {/* Modal Dialog */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-bg-card border border-cyan-500/30 rounded-lg shadow-xl shadow-cyan-500/10 max-w-md w-full p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-primary">Crear Nuevo Depósito</h2>
                 <button
                   onClick={() => setShowForm(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-text-secondary hover:text-primary transition-colors"
                 >
                   ✕
                 </button>
@@ -148,7 +148,7 @@ export default function DepositosPage() {
                     value={formData.userId}
                     onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 bg-bg-main border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
                   >
                     <option value="">Selecciona un usuario</option>
                     {users.map((user) => (
@@ -171,7 +171,7 @@ export default function DepositosPage() {
                     onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                     placeholder="0.00"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 bg-bg-main border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
                   />
                   <p className="text-xs text-text-secondary mt-1">Mínimo: Bs. 5</p>
                 </div>
@@ -180,14 +180,14 @@ export default function DepositosPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-green-700 disabled:opacity-50 font-medium"
+                    className="flex-1 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 disabled:opacity-50 font-medium transition-all duration-300"
                   >
                     {submitting ? 'Registrando...' : 'Registrar'}
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowForm(false)}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium"
+                    className="flex-1 px-4 py-2 border border-cyan-500/30 rounded-lg hover:bg-cyan-500/10 font-medium transition-colors"
                   >
                     Cancelar
                   </button>
@@ -203,23 +203,23 @@ export default function DepositosPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-semibold text-text-secondary">Fecha</th>
-                    <th className="text-left py-3 px-4 font-semibold text-text-secondary">Usuario</th>
-                    <th className="text-right py-3 px-4 font-semibold text-text-secondary">Monto (Bs.)</th>
-                    <th className="text-center py-3 px-4 font-semibold text-text-secondary">Acciones</th>
+                  <tr className="border-b border-cyan-500/30 bg-cyan-500/5">
+                    <th className="text-left py-3 px-4 font-semibold text-primary">Fecha</th>
+                    <th className="text-left py-3 px-4 font-semibold text-primary">Usuario</th>
+                    <th className="text-right py-3 px-4 font-semibold text-primary">Monto (Bs.)</th>
+                    <th className="text-center py-3 px-4 font-semibold text-primary">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {deposits.map((deposit) => (
-                    <tr key={deposit._id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={deposit._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
                       <td className="py-4 px-4 text-sm text-text-secondary">
                         {new Date(deposit.createdAt).toLocaleDateString('es-BO')}
                       </td>
                       <td className="py-4 px-4 font-medium text-text-primary">
                         {typeof deposit.userId === 'object' ? deposit.userId?.name : (users.find(u => u._id === deposit.userId)?.name || 'Usuario')}
                       </td>
-                      <td className="py-4 px-4 text-right font-semibold text-secondary">
+                      <td className="py-4 px-4 text-right font-semibold text-primary">
                         Bs. {deposit.amount.toFixed(2)}
                       </td>
                       <td className="py-4 px-4 text-center space-x-2">
@@ -233,7 +233,7 @@ export default function DepositosPage() {
                             link.click();
                             document.body.removeChild(link);
                           }}
-                          className="inline-flex items-center px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                          className="inline-flex items-center px-3 py-1 text-sm bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors border border-primary/30"
                           title="Descargar PDF"
                         >
                           <Download size={14} />
@@ -241,7 +241,7 @@ export default function DepositosPage() {
                         {deposit.whatsappLink && (
                           <button
                             onClick={() => window.open(deposit.whatsappLink, '_blank')}
-                            className="inline-flex items-center px-3 py-1 text-sm bg-green-100 text-green-700 rounded hover:bg-green-200"
+                            className="inline-flex items-center px-3 py-1 text-sm bg-secondary/20 text-secondary rounded hover:bg-secondary/30 transition-colors border border-secondary/30"
                             title="Enviar por WhatsApp"
                           >
                             <MessageCircle size={14} />

@@ -109,10 +109,10 @@ export default function BadgesPage() {
       <div className="max-w-6xl mx-auto">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-primary hover:text-primary-dark mb-8 transition"
+          className="flex items-center gap-2 text-primary hover:text-primary hover:bg-primary/10 px-3 py-2 rounded-lg transition-all duration-200 mb-8 font-semibold"
         >
           <ArrowLeft size={20} />
-          <span className="font-semibold">Volver</span>
+          <span>Volver</span>
         </button>
 
         <div className="mb-8">
@@ -146,9 +146,9 @@ export default function BadgesPage() {
 
         {/* Progress Bar */}
         <div className="card mb-8">
-          <div className="w-full bg-gray-200 rounded-full h-4">
+          <div className="w-full bg-primary/10 rounded-full h-4 border border-primary/20">
             <div
-              className="bg-gradient-to-r from-secondary to-primary h-4 rounded-full transition-all duration-500"
+              className="bg-gradient-btn h-4 rounded-full transition-all duration-500 shadow-lg shadow-primary/30"
               style={{ width: `${(myBadges.length / AVAILABLE_BADGES.length) * 100}%` }}
             ></div>
           </div>
@@ -163,22 +163,24 @@ export default function BadgesPage() {
             return (
               <div
                 key={badge.id}
-                className={`card transition-all ${
+                className={`card transition-all duration-300 ${
                   isUnlocked
-                    ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 shadow-lg'
-                    : 'bg-gray-50 border border-gray-200 opacity-60'
+                    ? 'bg-gradient-to-br from-primary/15 to-primary/5 dark:from-primary/25 dark:to-primary/10 border-2 border-primary/50 shadow-lg hover:shadow-xl hover:shadow-primary/30'
+                    : 'bg-bg-card border border-primary/10 opacity-60 hover:opacity-80 hover:border-primary/20'
                 }`}
               >
                 <div className="flex flex-col items-center">
                   <div
-                    className={`text-6xl mb-4 transition-transform ${
-                      isUnlocked ? 'scale-100' : 'scale-50 opacity-50'
+                    className={`text-6xl mb-4 transition-all duration-300 ${
+                      isUnlocked ? 'scale-100' : 'scale-50 opacity-40'
                     }`}
                   >
                     {badge.emoji}
                   </div>
 
-                  <h3 className="text-lg font-bold text-center text-gray-800 mb-2">
+                  <h3 className={`text-lg font-bold text-center mb-2 ${
+                    isUnlocked ? 'text-primary' : 'text-text-secondary/60'
+                  }`}>
                     {badge.name}
                   </h3>
 
@@ -188,8 +190,8 @@ export default function BadgesPage() {
 
                   {isUnlocked ? (
                     <div className="w-full">
-                      <div className="bg-green-100 border border-green-300 rounded-lg p-3 text-center mb-2">
-                        <p className="text-xs font-semibold text-green-700">✓ Desbloqueada</p>
+                      <div className="bg-gradient-to-br from-primary/20 to-secondary/10 border border-primary/40 rounded-lg p-3 text-center mb-2">
+                        <p className="text-xs font-semibold text-primary">✓ Desbloqueada</p>
                       </div>
                       <p className="text-xs text-text-secondary text-center">
                         {new Date(myBadge.unlockedAt).toLocaleDateString('es-BO')}
@@ -197,8 +199,8 @@ export default function BadgesPage() {
                     </div>
                   ) : (
                     <div className="w-full">
-                      <div className="bg-gray-200 border border-gray-300 rounded-lg p-3 text-center">
-                        <p className="text-xs font-semibold text-gray-600">Bloqueada</p>
+                      <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 text-center">
+                        <p className="text-xs font-semibold text-text-secondary/60">Bloqueada</p>
                       </div>
                     </div>
                   )}
@@ -209,7 +211,7 @@ export default function BadgesPage() {
         </div>
 
         {/* Info Section */}
-        <div className="mt-12 card bg-blue-50 border border-blue-200">
+        <div className="mt-12 card bg-gradient-to-br from-primary/15 to-accent/10 dark:from-primary/25 dark:to-accent/20 border border-primary/30">
           <div className="flex gap-4">
             <div className="text-2xl">ℹ️</div>
             <div>

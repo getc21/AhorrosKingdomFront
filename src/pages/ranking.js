@@ -141,8 +141,8 @@ export default function RankingPage() {
                       key={person.id}
                       className={`border-b border-gray-200 dark:border-gray-700 transition-colors text-xs sm:text-sm ${
                         currentUserPosition === index
-                          ? 'bg-yellow-50 dark:bg-yellow-900 font-semibold'
-                          : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                          ? 'bg-accent/20 font-semibold'
+                          : 'hover:bg-cyan-500/10'
                       }`}
                     >
                       <td className="px-2 sm:px-4 py-2 sm:py-4 text-center">
@@ -155,7 +155,7 @@ export default function RankingPage() {
                         </div>
                       </td>
                       <td className="hidden sm:table-cell px-2 sm:px-4 py-2 sm:py-4 text-center">
-                        <span className="inline-block px-2 sm:px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                        <span className="inline-block px-2 sm:px-3 py-1 bg-primary/20 border border-primary/50 text-primary rounded-full text-xs font-medium">
                           {person.depositCount}
                         </span>
                       </td>

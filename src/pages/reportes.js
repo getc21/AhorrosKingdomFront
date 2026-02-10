@@ -176,7 +176,7 @@ export default function ReportesPage() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-100 text-red-700 rounded">
+          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 text-red-300 rounded">
             {error}
           </div>
         )}
@@ -195,23 +195,23 @@ export default function ReportesPage() {
                 </div>
               </div>
 
-              <div className="card border-l-4 border-green-500">
+              <div className="card border-l-4 border-primary">
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-text-secondary text-sm mb-1">Usuarios Activos</p>
-                    <p className="text-3xl font-bold text-green-600">{reportData.activeUsers}</p>
+                    <p className="text-3xl font-bold text-secondary">{reportData.activeUsers}</p>
                   </div>
-                  <ArrowUp className="text-green-600" size={24} />
+                  <ArrowUp className="text-secondary" size={24} />
                 </div>
               </div>
 
-              <div className="card border-l-4 border-blue-500">
+              <div className="card border-l-4 border-primary">
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-text-secondary text-sm mb-1">Total Depósitos</p>
-                    <p className="text-3xl font-bold text-blue-600">{reportData.totalDeposits}</p>
+                    <p className="text-3xl font-bold text-primary">{reportData.totalDeposits}</p>
                   </div>
-                  <DollarSign className="text-blue-600" size={24} />
+                  <DollarSign className="text-primary" size={24} />
                 </div>
               </div>
 
@@ -219,9 +219,9 @@ export default function ReportesPage() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-text-secondary text-sm mb-1">Total Ahorrado</p>
-                    <p className="text-3xl font-bold text-secondary">Bs. {reportData.totalAmount.toFixed(2)}</p>
+                    <p className="text-3xl font-bold text-primary">Bs. {reportData.totalAmount.toFixed(2)}</p>
                   </div>
-                  <Target className="text-secondary" size={24} />
+                  <Target className="text-primary" size={24} />
                 </div>
               </div>
 
@@ -243,13 +243,16 @@ export default function ReportesPage() {
                 <h2 className="text-xl font-bold text-primary mb-4">Depósitos por Mes</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={reportData.monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="amount" fill="#3b82f6" name="Monto (Bs.)" />
-                    <Bar dataKey="count" fill="#10b981" name="Cantidad" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1E3A5F" />
+                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fill: '#CBD5E1', fontSize: 12 }} />
+                    <YAxis tick={{ fill: '#CBD5E1', fontSize: 12 }} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#1E293B', border: '1px solid #00D4FF', borderRadius: '8px', color: '#F1F5F9' }}
+                      labelStyle={{ color: '#F1F5F9' }}
+                    />
+                    <Legend wrapperStyle={{ color: '#CBD5E1' }} />
+                    <Bar dataKey="amount" fill="#00D4FF" name="Monto (Bs.)" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="count" fill="#00B4D8" name="Cantidad" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -273,7 +276,10 @@ export default function ReportesPage() {
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#1E293B', border: '1px solid #00D4FF', borderRadius: '8px', color: '#F1F5F9' }}
+                      labelStyle={{ color: '#F1F5F9' }}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -286,7 +292,7 @@ export default function ReportesPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b-2 border-primary">
+                      <tr className="border-b-2 border-cyan-500/30 bg-cyan-500/5">
                         <th className="text-left py-3 px-4 font-bold text-primary">Plan</th>
                         <th className="text-center py-3 px-4 font-bold text-primary">Usuarios</th>
                         <th className="text-right py-3 px-4 font-bold text-primary">Total Ahorrado (Bs.)</th>
@@ -295,11 +301,11 @@ export default function ReportesPage() {
                     </thead>
                     <tbody>
                       {reportData.planData.map((plan, index) => (
-                        <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
-                          <td className="py-3 px-4 font-medium">{plan.name}</td>
-                          <td className="text-center py-3 px-4">{plan.users}</td>
-                          <td className="text-right py-3 px-4">Bs. {plan.totalSaved.toFixed(2)}</td>
-                          <td className="text-right py-3 px-4">
+                        <tr key={index} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
+                          <td className="py-3 px-4 font-medium text-text-primary">{plan.name}</td>
+                          <td className="text-center py-3 px-4 text-text-secondary">{plan.users}</td>
+                          <td className="text-right py-3 px-4 text-primary font-semibold">Bs. {plan.totalSaved.toFixed(2)}</td>
+                          <td className="text-right py-3 px-4 text-primary font-semibold">
                             Bs. {(plan.totalSaved / plan.users).toFixed(2)}
                           </td>
                         </tr>

@@ -18,8 +18,8 @@ function PasswordChangeModal({ isOpen, onSubmit, onSkip, pwdData, setPwdData, lo
     <div className="fixed inset-0 flex items-center justify-center p-3 sm:p-4 z-[999999]">
       <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-sm" onClick={onSkip}></div>
       
-      <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full max-h-screen overflow-y-auto shadow-2xl relative z-10 border border-gray-200 dark:border-gray-700">
-        <div className="bg-gradient-to-r from-primary to-blue-800 p-4 sm:p-6 text-white flex justify-between items-center sticky top-0">
+      <div className="bg-bg-card rounded-xl max-w-md w-full max-h-screen overflow-y-auto shadow-2xl relative z-10 border border-cyan-500/30">
+        <div className="bg-gradient-to-r from-primary to-secondary p-4 sm:p-6 text-white flex justify-between items-center sticky top-0">
           <div className="flex items-center gap-2 sm:gap-3">
             <ShieldCheck className="text-secondary flex-shrink-0" size={20} />
             <h2 className="text-base sm:text-xl font-bold">Seguridad Obligatoria</h2>
@@ -27,7 +27,7 @@ function PasswordChangeModal({ isOpen, onSubmit, onSkip, pwdData, setPwdData, lo
         </div>
 
         <div className="p-4 sm:p-6">
-          <div className="bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-400 p-3 sm:p-4 mb-4 sm:mb-6">
+          <div className="bg-primary/10 border-l-4 border-primary p-3 sm:p-4 mb-4 sm:mb-6">
             <p className="text-blue-700 dark:text-blue-200 text-xs sm:text-sm">
               <strong>¡Hola!</strong> Por seguridad de tu cuenta, te recomendamos actualizar la contraseña temporal que te asignó el administrador.
             </p>
@@ -52,7 +52,7 @@ function PasswordChangeModal({ isOpen, onSubmit, onSkip, pwdData, setPwdData, lo
                   autoComplete="false"
                   value={pwdData.oldPassword}
                   onChange={(e) => setPwdData({ ...pwdData, oldPassword: e.target.value })}
-                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all dark:text-white"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm bg-bg-card border border-cyan-500/30 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all text-text-primary"
                   placeholder="Clave temporal"
                 />
               </div>
@@ -69,7 +69,7 @@ function PasswordChangeModal({ isOpen, onSubmit, onSkip, pwdData, setPwdData, lo
                   autoComplete="false"
                   value={pwdData.newPassword}
                   onChange={(e) => setPwdData({ ...pwdData, newPassword: e.target.value })}
-                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all dark:text-white"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm bg-bg-card border border-cyan-500/30 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all text-text-primary"
                   placeholder="Mínimo 6 caracteres"
                 />
               </div>
@@ -86,7 +86,7 @@ function PasswordChangeModal({ isOpen, onSubmit, onSkip, pwdData, setPwdData, lo
                   autoComplete="false"
                   value={pwdData.confirmPassword}
                   onChange={(e) => setPwdData({ ...pwdData, confirmPassword: e.target.value })}
-                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all dark:text-white"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm bg-bg-card border border-cyan-500/30 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all text-text-primary"
                   placeholder="Repite la contraseña"
                 />
               </div>
@@ -285,21 +285,21 @@ export default function DashboardPage() {
       const element = document.createElement('div');
       element.innerHTML = `
         <div style="font-family: Arial, sans-serif; color: #333; padding: 20px;">
-          <div style="text-align: center; border-bottom: 3px solid #1E3A8A; padding-bottom: 20px; margin-bottom: 30px;">
-            <div style="font-size: 24px; font-weight: bold; color: #1E3A8A; margin-bottom: 10px;">👥 Ahorros Kingdom</div>
-            <h1 style="margin: 0; color: #1E3A8A;">Reporte de Usuarios</h1>
+          <div style="text-align: center; border-bottom: 3px solid #00D4FF; padding-bottom: 20px; margin-bottom: 30px;">
+            <div style="font-size: 24px; font-weight: bold; color: #00D4FF; margin-bottom: 10px;">Sistema de ahorros ENERGY</div>
+            <h1 style="margin: 0; color: #00D4FF;">Reporte de Usuarios</h1>
             <div style="font-size: 12px; color: #666; margin-top: 10px;">Generado: ${new Date().toLocaleDateString('es-BO')}</div>
           </div>
 
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
             <thead>
-              <tr style="background: #1E3A8A; color: white;">
-                <th style="padding: 12px; text-align: center; font-weight: bold; border-bottom: 2px solid #1E3A8A;">Pos.</th>
-                <th style="padding: 12px; text-align: left; font-weight: bold; border-bottom: 2px solid #1E3A8A;">Nombre</th>
-                <th style="padding: 12px; text-align: left; font-weight: bold; border-bottom: 2px solid #1E3A8A;">Teléfono</th>
-                <th style="padding: 12px; text-align: right; font-weight: bold; border-bottom: 2px solid #1E3A8A;">Ahorrado (Bs.)</th>
-                <th style="padding: 12px; text-align: center; font-weight: bold; border-bottom: 2px solid #1E3A8A;">Depósitos</th>
-                <th style="padding: 12px; text-align: center; font-weight: bold; border-bottom: 2px solid #1E3A8A;">Avance %</th>
+              <tr style="background: #00D4FF; color: #0F172A;">
+                <th style="padding: 12px; text-align: center; font-weight: bold; border-bottom: 2px solid #00D4FF;">Pos.</th>
+                <th style="padding: 12px; text-align: left; font-weight: bold; border-bottom: 2px solid #00D4FF;">Nombre</th>
+                <th style="padding: 12px; text-align: left; font-weight: bold; border-bottom: 2px solid #00D4FF;">Teléfono</th>
+                <th style="padding: 12px; text-align: right; font-weight: bold; border-bottom: 2px solid #00D4FF;">Ahorrado (Bs.)</th>
+                <th style="padding: 12px; text-align: center; font-weight: bold; border-bottom: 2px solid #00D4FF;">Depósitos</th>
+                <th style="padding: 12px; text-align: center; font-weight: bold; border-bottom: 2px solid #00D4FF;">Avance %</th>
               </tr>
             </thead>
             <tbody>
@@ -320,8 +320,8 @@ export default function DashboardPage() {
                   </td>
                   <td style="padding: 10px 12px;">${u.name}</td>
                   <td style="padding: 10px 12px;">${u.phone}</td>
-                  <td style="padding: 10px 12px; text-align: right; font-weight: bold; color: #16A34A;">Bs. ${u.totalSaved.toFixed(2)}</td>
-                  <td style="padding: 10px 12px; text-align: center;"><span style="background: #3B82F6; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">${u.depositCount}</span></td>
+                  <td style="padding: 10px 12px; text-align: right; font-weight: bold; color: #00B4D8;">Bs. ${u.totalSaved.toFixed(2)}</td>
+                  <td style="padding: 10px 12px; text-align: center;"><span style="background: #00D4FF; color: #0F172A; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">${u.depositCount}</span></td>
                   <td style="padding: 10px 12px; text-align: center;">${u.progressPercent?.toFixed(0) || 0}%</td>
                 </tr>
               `
@@ -330,23 +330,23 @@ export default function DashboardPage() {
             </tbody>
           </table>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px; padding-top: 20px; border-top: 2px solid #1E3A8A;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px; padding-top: 20px; border-top: 2px solid #00D4FF;">
             <div style="text-align: center;">
               <div style="font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px;">Total de Usuarios</div>
-              <div style="font-size: 20px; font-weight: bold; color: #1E3A8A;">${users.length}</div>
+              <div style="font-size: 20px; font-weight: bold; color: #00D4FF;">${users.length}</div>
             </div>
             <div style="text-align: center;">
               <div style="font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px;">Total Ahorrado</div>
-              <div style="font-size: 20px; font-weight: bold; color: #1E3A8A;">Bs. ${users.reduce((sum, u) => sum + u.totalSaved, 0).toFixed(2)}</div>
+              <div style="font-size: 20px; font-weight: bold; color: #00D4FF;">Bs. ${users.reduce((sum, u) => sum + u.totalSaved, 0).toFixed(2)}</div>
             </div>
             <div style="text-align: center;">
               <div style="font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px;">Promedio por Usuario</div>
-              <div style="font-size: 20px; font-weight: bold; color: #1E3A8A;">Bs. ${(users.reduce((sum, u) => sum + u.totalSaved, 0) / users.length).toFixed(2)}</div>
+              <div style="font-size: 20px; font-weight: bold; color: #00D4FF;">Bs. ${(users.reduce((sum, u) => sum + u.totalSaved, 0) / users.length).toFixed(2)}</div>
             </div>
           </div>
 
           <div style="text-align: center; font-size: 11px; color: #999; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-            <p>Este reporte es confidencial y de uso oficial. Generado automáticamente por Ahorros Kingdom.</p>
+            <p>Este reporte es confidencial y de uso oficial. Generado automáticamente por Sistema de ahorros ENERGY.</p>
           </div>
         </div>
       `;
@@ -434,23 +434,23 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button 
                   onClick={() => router.push('/usuarios')}
-                  className="p-4 border-2 border-secondary rounded-lg hover:bg-green-50 transition text-left"
+                  className="p-4 border-2 border-secondary rounded-lg hover:bg-secondary/10 hover:border-secondary/80 transition-all duration-300 text-left group"
                 >
-                  <h3 className="font-bold text-secondary mb-1">👥 Gestionar Usuarios</h3>
+                  <h3 className="font-bold text-secondary mb-1 group-hover:text-primary transition-colors">👥 Gestionar Usuarios</h3>
                   <p className="text-sm text-text-secondary">Ver y editar información de participantes</p>
                 </button>
                 <button 
                   onClick={() => router.push('/depositos')}
-                  className="p-4 border-2 border-primary rounded-lg hover:bg-blue-50 transition text-left"
+                  className="p-4 border-2 border-primary rounded-lg hover:bg-primary/10 hover:border-primary/80 transition-all duration-300 text-left group"
                 >
                   <h3 className="font-bold text-primary mb-1">📊 Gestionar Depósitos</h3>
                   <p className="text-sm text-text-secondary">Crear, ver y gestionar depósitos</p>
                 </button>
                 <button 
                   onClick={() => router.push('/reportes')}
-                  className="p-4 border-2 border-accent rounded-lg hover:bg-yellow-50 transition text-left"
+                  className="p-4 border-2 border-accent rounded-lg hover:bg-accent/10 hover:border-accent/80 transition-all duration-300 text-left group"
                 >
-                  <h3 className="font-bold text-accent mb-1">📈 Reportes</h3>
+                  <h3 className="font-bold text-accent mb-1 group-hover:text-primary transition-colors">📈 Reportes</h3>
                   <p className="text-sm text-text-secondary">Ver estadísticas y reportes del programa</p>
                 </button>
               </div>
@@ -485,7 +485,7 @@ export default function DashboardPage() {
                 <button
                   onClick={generateUsersPDF}
                   disabled={usersLoading || users.length === 0}
-                  className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm sm:text-base"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm sm:text-base"
                   title="Descargar reporte en PDF"
                 >
                   <Download size={20} />
@@ -503,37 +503,37 @@ export default function DashboardPage() {
                 <div className="overflow-x-auto -mx-4 sm:mx-0">
                   <table className="w-full min-w-max">
                     <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-3 px-4 font-semibold text-sm text-text-secondary">Posición</th>
-                        <th className="text-left py-3 px-4 font-semibold text-sm text-text-secondary">Nombre</th>
-                        <th className="text-left py-3 px-4 font-semibold text-sm text-text-secondary">Teléfono</th>
-                        <th className="text-right py-3 px-4 font-semibold text-sm text-text-secondary">Total Ahorrado</th>
-                        <th className="text-center py-3 px-4 font-semibold text-sm text-text-secondary">Depósitos</th>
-                        <th className="text-center py-3 px-4 font-semibold text-sm text-text-secondary">Progreso</th>
+                      <tr className="border-b border-primary/30 bg-primary/5">
+                        <th className="text-left py-3 px-4 font-semibold text-sm text-primary">Posición</th>
+                        <th className="text-left py-3 px-4 font-semibold text-sm text-primary">Nombre</th>
+                        <th className="text-left py-3 px-4 font-semibold text-sm text-primary">Teléfono</th>
+                        <th className="text-right py-3 px-4 font-semibold text-sm text-primary">Total Ahorrado</th>
+                        <th className="text-center py-3 px-4 font-semibold text-sm text-primary">Depósitos</th>
+                        <th className="text-center py-3 px-4 font-semibold text-sm text-primary">Progreso</th>
                       </tr>
                     </thead>
                     <tbody>
                       {users.map((u) => (
-                        <tr key={u.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                        <tr key={u.id} className="border-b border-primary/20 hover:bg-primary/10 dark:hover:bg-primary/10 transition-colors duration-200">
                           <td className="py-3 px-4 text-sm">
                             {u.position === 1 && <span className="text-xl">🥇</span>}
                             {u.position === 2 && <span className="text-xl">🥈</span>}
                             {u.position === 3 && <span className="text-xl">🥉</span>}
                             {u.position > 3 && <span className="font-bold text-text-secondary">#{u.position}</span>}
                           </td>
-                          <td className="py-3 px-4 text-sm font-semibold text-text-primary dark:text-white">{u.name}</td>
+                          <td className="py-3 px-4 text-sm font-semibold text-text-primary">{u.name}</td>
                           <td className="py-3 px-4 text-sm text-text-secondary">{u.phone}</td>
-                          <td className="py-3 px-4 text-sm text-right font-bold text-secondary">Bs. {u.totalSaved.toFixed(2)}</td>
+                          <td className="py-3 px-4 text-sm text-right font-bold text-primary">Bs. {u.totalSaved.toFixed(2)}</td>
                           <td className="py-3 px-4 text-sm text-center">
-                            <span className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            <span className="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-semibold border border-primary/30">
                               {u.depositCount}
                             </span>
                           </td>
                           <td className="py-3 px-4 text-sm text-center">
                             <div className="flex items-center justify-center">
-                              <div className="w-full max-w-xs bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                              <div className="w-full max-w-xs bg-primary/10 rounded-full h-2 border border-primary/20">
                                 <div 
-                                  className="bg-gradient-to-r from-secondary to-green-500 h-2 rounded-full transition-all"
+                                  className="bg-gradient-btn h-2 rounded-full transition-all"
                                   style={{ width: `${Math.min((u.totalSaved / 500) * 100, 100)}%` }}
                                 ></div>
                               </div>
@@ -634,14 +634,14 @@ export default function DashboardPage() {
                       <p className="text-xs text-text-secondary">Desbloquea logros completando objetivos</p>
                     </div>
                   </div>
-                  <span className="text-sm font-bold text-primary bg-blue-100 px-3 py-1 rounded-full">
+                  <span className="text-sm font-bold text-primary bg-primary/20 px-3 py-1 rounded-full border border-primary/30">
                     {badges.length}
                   </span>
                 </div>
                 <BadgesList badges={badges.slice(0, 5)} />
                 <button
                   onClick={() => router.push('/badges')}
-                  className="w-full mt-4 py-2 px-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-primary font-semibold rounded-lg transition"
+                  className="w-full mt-4 py-2 px-4 bg-gradient-btn hover:shadow-lg hover:shadow-primary/50 text-white font-semibold rounded-lg transition-all duration-300"
                 >
                   Ver Todas las Insignias →
                 </button>
@@ -650,7 +650,7 @@ export default function DashboardPage() {
               {/* Rules and Ranking */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Rules */}
-                <div className="card bg-blue-50 border border-blue-200">
+                <div className="card bg-gradient-card border border-primary/30">
                   <div className="flex items-start">
                     <AlertCircle size={20} className="text-primary mr-3 mt-1 flex-shrink-0" />
                     <div>
@@ -668,12 +668,12 @@ export default function DashboardPage() {
                 {/* Ranking Button */}
                 <button
                   onClick={() => router.push('/ranking')}
-                  className="card bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-300 hover:shadow-lg transition cursor-pointer"
+                  className="card bg-gradient-to-br from-accent/20 to-accent/10 border-2 border-accent/40 hover:shadow-lg hover:shadow-accent/30 transition cursor-pointer"
                 >
                   <div className="flex flex-col items-center justify-center h-full py-4">
                     <div className="text-4xl mb-3">🏆</div>
-                    <h3 className="font-bold text-lg text-yellow-700 mb-1">Tabla de Posiciones</h3>
-                    <p className="text-sm text-yellow-600">Ver el ranking de ahorristas</p>
+                    <h3 className="font-bold text-lg text-accent mb-1">Tabla de Posiciones</h3>
+                    <p className="text-sm text-text-secondary">Ver el ranking de ahorristas</p>
                   </div>
                 </button>
               </div>
@@ -702,7 +702,7 @@ export default function DashboardPage() {
                   <div className="overflow-x-auto -mx-4 sm:mx-0">
                     <table className="w-full min-w-max text-sm sm:text-base">
                       <thead>
-                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                        <tr className="border-b border-primary/30">
                           <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm text-text-secondary">Fecha</th>
                           <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm text-text-secondary">Descripción</th>
                           <th className="text-right py-2 sm:py-3 px-3 sm:px-4 font-semibold text-xs sm:text-sm text-text-secondary">Monto (Bs.)</th>
@@ -710,7 +710,7 @@ export default function DashboardPage() {
                       </thead>
                       <tbody>
                         {filteredDeposits.map((deposit) => (
-                          <tr key={deposit.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                          <tr key={deposit.id} className="border-b border-primary/20 hover:bg-primary/10">
                             <td className="py-2 sm:py-3 px-3 sm:px-4 text-xs sm:text-sm">
                               {new Date(deposit.date).toLocaleDateString('es-BO')}
                             </td>

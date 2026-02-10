@@ -12,30 +12,30 @@ export const generateDepositsPDF = async (user, deposits) => {
     element.innerHTML = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; color: #333; padding: 30px; background: #ffffff;">
         <!-- Header -->
-        <div style="text-align: center; background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(30, 58, 138, 0.1);">
+        <div style="text-align: center; background: linear-gradient(135deg, #00D4FF 0%, #00B4D8 100%); color: #0F172A; padding: 30px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0, 212, 255, 0.2);">
           <div style="font-size: 32px; margin-bottom: 10px;">🏰</div>
           <h1 style="margin: 0 0 10px 0; font-size: 28px;">Reporte de Depósitos</h1>
-          <p style="margin: 0; font-size: 13px; opacity: 0.9;">Ahorros Kingdom</p>
+          <p style="margin: 0; font-size: 13px; opacity: 0.9;">Sistema de ahorros ENERGY</p>
           <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.85;">Generado: ${new Date().toLocaleDateString('es-BO')} a las ${new Date().toLocaleTimeString('es-BO')}</p>
         </div>
 
         <!-- User Info Cards -->
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 30px;">
-          <div style="background: linear-gradient(135deg, #1E3A8A08 0%, #3B82F608 100%); border-left: 4px solid #1E3A8A; padding: 15px; border-radius: 5px;">
+          <div style="background: linear-gradient(135deg, #00D4FF15 0%, #00D4FF08 100%); border-left: 4px solid #00D4FF; padding: 15px; border-radius: 5px;">
             <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Participante</div>
-            <div style="font-size: 16px; font-weight: bold; color: #1E3A8A;">${user.name || 'N/A'}</div>
+            <div style="font-size: 16px; font-weight: bold; color: #00D4FF;">${user.name || 'N/A'}</div>
           </div>
-          <div style="background: linear-gradient(135deg, #16A34A08 0%, #22C55E08 100%); border-left: 4px solid #16A34A; padding: 15px; border-radius: 5px;">
+          <div style="background: linear-gradient(135deg, #00B4D815 0%, #00B4D808 100%); border-left: 4px solid #00B4D8; padding: 15px; border-radius: 5px;">
             <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Teléfono</div>
-            <div style="font-size: 16px; font-weight: bold; color: #16A34A;">${user.phone || 'N/A'}</div>
+            <div style="font-size: 16px; font-weight: bold; color: #00B4D8;">${user.phone || 'N/A'}</div>
           </div>
-          <div style="background: linear-gradient(135deg, #F59E0B08 0%, #FBBF2408 100%); border-left: 4px solid #F59E0B; padding: 15px; border-radius: 5px;">
+          <div style="background: linear-gradient(135deg, #9D4EDD15 0%, #9D4EDD08 100%); border-left: 4px solid #9D4EDD; padding: 15px; border-radius: 5px;">
             <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Plan</div>
-            <div style="font-size: 14px; font-weight: bold; color: #F59E0B;">${user.planType || 'N/A'}</div>
+            <div style="font-size: 14px; font-weight: bold; color: #9D4EDD;">${user.planType || 'N/A'}</div>
           </div>
-          <div style="background: linear-gradient(135deg, #3B82F608 0%, #60A5FA08 100%); border-left: 4px solid #3B82F6; padding: 15px; border-radius: 5px;">
+          <div style="background: linear-gradient(135deg, #00D4FF08 0%, #00D4FF04 100%); border-left: 4px solid #00B4D8; padding: 15px; border-radius: 5px;">
             <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">Total Depósitos</div>
-            <div style="font-size: 20px; font-weight: bold; color: #3B82F6;">${deposits.length}</div>
+            <div style="font-size: 20px; font-weight: bold; color: #00D4FF;">${deposits.length}</div>
           </div>
         </div>
 
@@ -44,10 +44,10 @@ export const generateDepositsPDF = async (user, deposits) => {
             ? `
         <!-- Tabla de Depósitos -->
         <div style="margin-bottom: 30px;">
-          <h2 style="color: #1E3A8A; font-size: 18px; margin: 0 0 20px 0; padding-bottom: 10px; border-bottom: 2px solid #E5E7EB;">📋 Historial de Depósitos</h2>
+          <h2 style="color: #00D4FF; font-size: 18px; margin: 0 0 20px 0; padding-bottom: 10px; border-bottom: 2px solid #00D4FF99;">📋 Historial de Depósitos</h2>
           <table style="width: 100%; border-collapse: collapse;">
             <thead>
-              <tr style="background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%); color: white;">
+              <tr style="background: linear-gradient(135deg, #00D4FF 0%, #00B4D8 100%); color: #0F172A;">
                 <th style="padding: 15px 12px; text-align: center; font-weight: bold; font-size: 13px;">Nº</th>
                 <th style="padding: 15px 12px; text-align: left; font-weight: bold; font-size: 13px;">Fecha</th>
                 <th style="padding: 15px 12px; text-align: left; font-weight: bold; font-size: 13px;">Descripción</th>
@@ -62,7 +62,7 @@ export const generateDepositsPDF = async (user, deposits) => {
                   <td style="padding: 12px; text-align: center; color: #666; font-weight: 600;">${idx + 1}</td>
                   <td style="padding: 12px; color: #666; font-size: 13px;">${new Date(deposit.date || deposit.createdAt).toLocaleDateString('es-BO')}</td>
                   <td style="padding: 12px; color: #333; font-size: 13px;">${deposit.description || '-'}</td>
-                  <td style="padding: 12px; text-align: right; font-weight: bold; color: #16A34A; font-size: 14px;">Bs. ${deposit.amount.toFixed(2)}</td>
+                  <td style="padding: 12px; text-align: right; font-weight: bold; color: #00B4D8; font-size: 14px;">Bs. ${deposit.amount.toFixed(2)}</td>
                 </tr>
               `
                 )
@@ -73,17 +73,17 @@ export const generateDepositsPDF = async (user, deposits) => {
 
         <!-- Summary Stats -->
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 40px; padding-top: 30px; border-top: 2px solid #E5E7EB;">
-          <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #16A34A08 0%, #22C55E08 100%); border-radius: 8px; border: 1px solid #D1FAE5;">
+          <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #00D4FF15 0%, #00D4FF08 100%); border-radius: 8px; border: 1px solid #00D4FF44;">
             <div style="font-size: 12px; color: #666; font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">Total Ahorrado</div>
-            <div style="font-size: 28px; font-weight: bold; color: #16A34A;">Bs. ${deposits.reduce((sum, d) => sum + d.amount, 0).toFixed(2)}</div>
+            <div style="font-size: 28px; font-weight: bold; color: #00D4FF;">Bs. ${deposits.reduce((sum, d) => sum + d.amount, 0).toFixed(2)}</div>
           </div>
-          <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #3B82F608 0%, #60A5FA08 100%); border-radius: 8px; border: 1px solid #DBEAFE;">
+          <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #00B4D815 0%, #00B4D808 100%); border-radius: 8px; border: 1px solid #00B4D844;">
             <div style="font-size: 12px; color: #666; font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">Promedio por Depósito</div>
-            <div style="font-size: 28px; font-weight: bold; color: #3B82F6;">Bs. ${(deposits.reduce((sum, d) => sum + d.amount, 0) / deposits.length).toFixed(2)}</div>
+            <div style="font-size: 28px; font-weight: bold; color: #00B4D8;">Bs. ${(deposits.reduce((sum, d) => sum + d.amount, 0) / deposits.length).toFixed(2)}</div>
           </div>
-          <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #F59E0B08 0%, #FBBF2408 100%); border-radius: 8px; border: 1px solid #FEF3C7;">
+          <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #9D4EDD15 0%, #9D4EDD08 100%); border-radius: 8px; border: 1px solid #9D4EDD44;">
             <div style="font-size: 12px; color: #666; font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">Depósito Máximo</div>
-            <div style="font-size: 28px; font-weight: bold; color: #F59E0B;">Bs. ${Math.max(...deposits.map(d => d.amount)).toFixed(2)}</div>
+            <div style="font-size: 28px; font-weight: bold; color: #9D4EDD;">Bs. ${Math.max(...deposits.map(d => d.amount)).toFixed(2)}</div>
           </div>
         </div>
       `
@@ -93,7 +93,7 @@ export const generateDepositsPDF = async (user, deposits) => {
         <!-- Footer -->
         <div style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #E5E7EB; font-size: 11px; color: #999;">
           <p style="margin: 0;">Este reporte es confidencial y de uso personal.</p>
-          <p style="margin: 5px 0 0 0;">Generado automáticamente por Ahorros Kingdom © ${new Date().getFullYear()}</p>
+          <p style="margin: 5px 0 0 0;">Generado automáticamente por Sistema de ahorros ENERGY © ${new Date().getFullYear()}</p>
         </div>
       </div>
     `;

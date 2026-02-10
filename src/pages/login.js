@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Eye, EyeOff } from 'lucide-react';
 import api from '@/lib/api';
 
 export default function LoginPage() {
@@ -8,6 +9,7 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ phone: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -49,15 +51,15 @@ export default function LoginPage() {
     <div className="min-h-screen bg-bg-main flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-2">🏰 Ahorros Kingdom</h1>
+          <h1 className="text-4xl font-bold gradient-text mb-2">Sistema de ahorros ENERGY</h1>
           <p className="text-text-secondary">Plan de Ahorro Comunitario</p>
         </div>
 
-        <div className="card">
+        <div className="card bg-gradient-card border border-cyan-500/30">
           <h2 className="text-2xl font-bold text-text-primary mb-6">Iniciar Sesión</h2>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+            <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 text-red-300 rounded-lg">
               {error}
             </div>
           )}
@@ -72,48 +74,47 @@ export default function LoginPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                placeholder="+591-XXXXXXXX"
+                placeholder="Número de celular"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 bg-bg-card border border-cyan-500/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-text-primary mb-1">
-                Acceso
+                Contraseña
               </label>
-              <input
-                type="text"
-                style={{ WebkitTextSecurity: 'disc' }}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                autoComplete="off"
-                placeholder="••••••••"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  placeholder="••••••••"
+                  required
+                  className="w-full px-4 py-2 bg-bg-card border border-cyan-500/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled pr-12"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-primary transition-colors"
+                  title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <button
               type="button"
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full px-4 py-2 bg-blue-900 text-white rounded-lg font-medium hover:bg-blue-800 disabled:opacity-50"
+              className="w-full px-4 py-2 bg-gradient-btn text-white rounded-lg font-medium hover:shadow-lg hover:shadow-primary/50 disabled:opacity-50 transition-all duration-300"
             >
               {loading ? 'Cargando...' : 'Iniciar Sesión'}
             </button>
           </div>
-        </div>
-
-        <div className="mt-6 card bg-accent bg-opacity-10">
-          <p className="text-sm text-text-secondary">
-            <strong>Credenciales de prueba (Admin):</strong>
-            <br />
-            Teléfono: +591-admin-001
-            <br />
-            Contraseña: admin123
-          </p>
         </div>
       </div>
     </div>

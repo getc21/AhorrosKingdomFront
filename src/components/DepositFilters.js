@@ -73,11 +73,11 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
       {/* Botón Toggle */}
       <button
         onClick={() => setShowFilters(!showFilters)}
-        className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm sm:text-base bg-blue-50 hover:bg-blue-100 border border-blue-200 text-primary rounded-lg transition font-semibold dark:bg-gray-800 dark:border-gray-700 dark:text-blue-400 w-full sm:w-auto"
+        className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm sm:text-base bg-gradient-to-r from-primary/15 to-secondary/15 dark:from-primary/25 dark:to-secondary/20 hover:from-primary/25 hover:to-secondary/25 border border-primary/30 dark:border-primary/40 text-primary rounded-lg transition font-semibold w-full sm:w-auto hover:shadow-md"
       >
         <span className="truncate">🔍 Filtros Avanzados</span>
         {hasActiveFilters && (
-          <span className="ml-auto sm:ml-2 inline-block px-2 py-1 bg-blue-500 text-white text-xs rounded-full flex-shrink-0">
+          <span className="ml-auto sm:ml-2 inline-block px-2 py-1 bg-gradient-btn text-white text-xs rounded-full flex-shrink-0">
             {Object.values(filters).filter((v) => v !== '').length}
           </span>
         )}
@@ -89,11 +89,11 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
 
       {/* Panel de Filtros */}
       {showFilters && (
-        <div className="mt-3 sm:mt-4 p-4 sm:p-6 card bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-gray-700">
+        <div className="mt-3 sm:mt-4 p-4 sm:p-6 card bg-gradient-to-br from-primary/10 to-accent/5 dark:from-primary/20 dark:to-accent/15 border border-primary/30 dark:border-primary/40 rounded-lg shadow-lg">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {/* Búsqueda de Texto */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-primary mb-2">
                 📝 Descripción
               </label>
               <input
@@ -102,13 +102,13 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
                 value={filters.searchText}
                 onChange={handleFilterChange}
                 placeholder="Buscar por descripción..."
-                className="w-full px-2 sm:px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-2 sm:px-3 py-2 text-sm bg-bg-card dark:bg-gray-800 border border-primary/20 dark:border-primary/30 rounded-lg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               />
             </div>
 
             {/* Monto Mínimo */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-primary mb-2">
                 💰 Monto Mínimo (Bs)
               </label>
               <input
@@ -117,13 +117,13 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
                 value={filters.minAmount}
                 onChange={handleFilterChange}
                 placeholder="Ej: 10"
-                className="w-full px-2 sm:px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-2 sm:px-3 py-2 text-sm bg-bg-card dark:bg-gray-800 border border-primary/20 dark:border-primary/30 rounded-lg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               />
             </div>
 
             {/* Monto Máximo */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-primary mb-2">
                 💵 Monto Máximo (Bs)
               </label>
               <input
@@ -132,13 +132,13 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
                 value={filters.maxAmount}
                 onChange={handleFilterChange}
                 placeholder="Ej: 500"
-                className="w-full px-2 sm:px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-2 sm:px-3 py-2 text-sm bg-bg-card dark:bg-gray-800 border border-primary/20 dark:border-primary/30 rounded-lg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               />
             </div>
 
             {/* Fecha de Inicio */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-primary mb-2">
                 📅 Desde
               </label>
               <input
@@ -146,13 +146,13 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
                 name="startDate"
                 value={filters.startDate}
                 onChange={handleFilterChange}
-                className="w-full px-2 sm:px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-2 sm:px-3 py-2 text-sm bg-bg-card dark:bg-gray-800 border border-primary/20 dark:border-primary/30 rounded-lg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               />
             </div>
 
             {/* Fecha de Fin */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-primary mb-2">
                 📅 Hasta
               </label>
               <input
@@ -160,7 +160,7 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
                 name="endDate"
                 value={filters.endDate}
                 onChange={handleFilterChange}
-                className="w-full px-2 sm:px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-2 sm:px-3 py-2 text-sm bg-bg-card dark:bg-gray-800 border border-primary/20 dark:border-primary/30 rounded-lg text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               />
             </div>
 
@@ -169,7 +169,7 @@ export default function DepositFilters({ deposits = [], onFiltered }) {
               <div className="flex items-end">
                 <button
                   onClick={resetFilters}
-                  className="w-full flex items-center justify-center gap-2 px-3 sm:px-4 py-2 text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition font-semibold dark:bg-red-900 dark:text-red-200"
+                  className="w-full flex items-center justify-center gap-2 px-3 sm:px-4 py-2 text-sm bg-gradient-to-r from-accent/20 to-accent/10 dark:from-accent/30 dark:to-accent/20 hover:from-accent/30 hover:to-accent/20 text-accent border border-accent/30 rounded-lg transition font-semibold hover:shadow-md"
                 >
                   <X size={16} />
                   Limpiar Filtros
