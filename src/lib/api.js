@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+// Use Render URL in production, localhost in development
+const API_URL = 
+  process.env.NEXT_PUBLIC_API_URL || 
+  (typeof window !== 'undefined' && window.location.hostname !== 'localhost' 
+    ? 'https://ahorroskingdomback.onrender.com'
+    : 'http://localhost:5000');
 
 const api = axios.create({
   baseURL: `${API_URL}/api`,
