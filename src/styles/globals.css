@@ -30,16 +30,43 @@ html.dark body {
 /* Light Mode */
 html:not(.dark),
 html:not(.dark) body {
-  background-color: #F8FAFC;
+  background-color: #FFFFFF;
   color: #0F172A;
 }
 
 html:not(.dark) {
   color-scheme: light;
+  background-color: #FFFFFF;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-disabled: #CBD5E1;
+  --bg-main: #FFFFFF;
+  --bg-card: #F5F5F5;
+}
+
+html:not(.dark) .text-text-primary {
+  color: #0F172A;
+}
+
+html:not(.dark) .text-text-secondary {
+  color: #475569;
+}
+
+html:not(.dark) .bg-bg-main {
+  background-color: #FFFFFF;
+}
+
+html:not(.dark) .bg-bg-card {
+  background-color: #F5F5F5;
 }
 
 html.dark {
   color-scheme: dark;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-disabled: #94A3B8;
+  --bg-main: #0F172A;
+  --bg-card: #1E293B;
 }
 
 body {
@@ -67,17 +94,102 @@ button {
   @apply px-4 py-2 border-2 border-primary text-primary rounded-lg font-medium hover:bg-primary/10 transition-all duration-300;
 }
 
+/* Input styles for both light and dark modes */
+input, select, textarea {
+  @apply transition-colors duration-300;
+}
+
+html.dark input, 
+html.dark select, 
+html.dark textarea {
+  background-color: #1E293B;
+  color: #F1F5F9;
+  border-color: #334155;
+}
+
+html.dark input::placeholder,
+html.dark select::placeholder,
+html.dark textarea::placeholder {
+  color: #94A3B8;
+}
+
+html:not(.dark) input,
+html:not(.dark) select,
+html:not(.dark) textarea {
+  background-color: #FFFFFF;
+  color: #0F172A;
+  border-color: #E2E8F0;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) select::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #94A3B8;
+}
+
+html:not(.dark) input:focus,
+html:not(.dark) select:focus,
+html:not(.dark) textarea:focus {
+  border-color: #97E332;
+  box-shadow: 0 0 0 3px rgba(151, 227, 50, 0.1);
+}
+
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+  border-color: #97E332;
+  box-shadow: 0 0 0 3px rgba(151, 227, 50, 0.1);
+}
+
+/* Border and style adjustments for light mode */
+html:not(.dark) {
+  --border-light: #E2E8F0;
+  --border-medium: #CBD5E1;
+}
+
+/* Table styles for light mode */
+html:not(.dark) table {
+  background-color: white;
+}
+
+html:not(.dark) tr {
+  border-color: #E2E8F0;
+}
+
+html:not(.dark) th {
+  background-color: #F5F5F5;
+  color: #0F172A;
+  border-color: #E2E8F0;
+}
+
+html:not(.dark) td {
+  border-color: #E2E8F0;
+}
+
+html:not(.dark) tr:hover {
+  background-color: #F5F5F5;
+}
+
+/* Modal styles for light mode */
+html:not(.dark) .modal,
+html:not(.dark) [role="dialog"] {
+  background-color: white;
+  color: #0F172A;
+  border-color: #E2E8F0;
+}
+
 .card {
   @apply bg-gradient-card border border-lime-400/20 rounded-2xl backdrop-blur-sm p-6 hover:border-lime-400/40 transition-all duration-300;
 }
 
+/* Dark mode card */
 html.dark .card {
   @apply bg-gradient-card border border-lime-400/20;
 }
 
 /* Light mode card */
 html:not(.dark) .card {
-  @apply border border-lime-400/30 bg-white hover:border-lime-400/50 shadow-sm hover:shadow-md;
+  @apply bg-white border border-lime-300 shadow-sm;
 }
 
 .progress-bar {

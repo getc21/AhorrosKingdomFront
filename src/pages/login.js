@@ -76,7 +76,7 @@ export default function LoginPage() {
                 onChange={handleChange}
                 placeholder="Número de celular"
                 required
-                className="w-full px-4 py-2 bg-bg-card border border-lime-400/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
+                className="w-full px-4 py-2 bg-bg-card border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
               />
             </div>
 
@@ -93,7 +93,7 @@ export default function LoginPage() {
                   autoComplete="off"
                   placeholder="••••••••"
                   required
-                  className="w-full px-4 py-2 bg-bg-card border border-cyan-500/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled pr-12"
+                  className="w-full px-4 py-2 bg-bg-card border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled pr-12"
                 />
                 <button
                   type="button"
