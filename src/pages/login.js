@@ -58,9 +58,8 @@ export default function LoginPage() {
             width={200} 
             height={120}
             priority
-            className="mx-auto mb-2"
+            className="mx-auto"
           />
-          <p className="text-text-secondary">Plan de Ahorro Comunitario</p>
         </div>
 
         <div className="card bg-gradient-card border border-lime-400/30">

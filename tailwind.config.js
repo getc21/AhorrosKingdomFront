@@ -7,6 +7,9 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontFamily: {
+      sans: ['Poppins', 'system-ui', 'sans-serif'],
+    },
     extend: {
       colors: {
         // Light mode colors
