@@ -302,7 +302,7 @@ export default function ReportesPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b-2 border-cyan-500/30 bg-cyan-500/5">
+                      <tr className="border-b-2 border-lime-400/30 bg-lime-500/5">
                         <th className="text-left py-3 px-4 font-bold text-primary">Evento</th>
                         <th className="text-center py-3 px-4 font-bold text-primary">Depósitos</th>
                         <th className="text-center py-3 px-4 font-bold text-primary">Usuarios</th>
@@ -314,7 +314,7 @@ export default function ReportesPage() {
                       {reportData.eventData.map((event, index) => {
                         const progress = event.goal > 0 ? ((event.totalSaved / event.goal) * 100).toFixed(2) : 0;
                         return (
-                          <tr key={index} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
+                          <tr key={index} className="border-b border-lime-400/20 hover:bg-lime-500/10 transition-colors duration-200">
                             <td className="py-3 px-4 font-medium text-text-primary">{event.name}</td>
                             <td className="text-center py-3 px-4 text-secondary font-semibold">{event.deposits}</td>
                             <td className="text-center py-3 px-4 text-primary font-semibold">{event.uniqueUsers}</td>
@@ -334,7 +334,7 @@ export default function ReportesPage() {
                         );
                       })}
                       {/* Row with totals */}
-                      <tr className="border-t-2 border-cyan-500/30 bg-cyan-500/5 font-bold">
+                      <tr className="border-t-2 border-lime-400/30 bg-lime-500/5 font-bold">
                         <td className="py-3 px-4 text-primary">TOTAL DEL SISTEMA</td>
                         <td className="text-center py-3 px-4 text-secondary">{reportData.totalDeposits}</td>
                         <td className="text-center py-3 px-4 text-primary">{reportData.totalUsers}</td>

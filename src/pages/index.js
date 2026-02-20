@@ -61,7 +61,7 @@ export default function HomePage() {
       </div>
 
       {/* Plans Section */}
-      <div className="bg-bg-card py-20 px-4 border-t border-cyan-500/20">
+      <div className="bg-bg-card py-20 px-4 border-t border-lime-400/20">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center gradient-text mb-16">
             Planes Disponibles
@@ -69,7 +69,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Plan 1 */}
-            <div className="card border-l-4 border-cyan-500 hover:border-l-primary transition-all duration-300">
+            <div className="card border-l-4 border-lime-400 hover:border-l-primary transition-all duration-300">
               <h3 className="text-2xl font-bold text-primary mb-2">🏕️ Campamento 2027</h3>
               <p className="text-text-secondary mb-4">
                 Ahorra para disfrutar del campamento comunitario del año 2027.

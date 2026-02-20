@@ -229,7 +229,7 @@ export default function UsuariosPage() {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center space-x-2 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 shadow-md\"
+            className="flex items-center space-x-2 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-lime-400/50 transition-all duration-300 shadow-md\"
           >
             <UserPlus size={20} />
             <span>Nuevo Usuario</span>
@@ -242,7 +242,7 @@ export default function UsuariosPage() {
             placeholder="Buscar por nombre o teléfono..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-96 px-4 py-2 bg-bg-card border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled shadow-sm"
+            className="w-full md:w-96 px-4 py-2 bg-bg-card border border-lime-400/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled shadow-sm"
           />
         </div>
 
@@ -257,7 +257,7 @@ export default function UsuariosPage() {
             <div className="overflow-x-auto -mx-4 sm:mx-0">
               <table className="w-full min-w-max text-sm sm:text-base">
                 <thead>
-                  <tr className="border-b border-cyan-500/30 bg-cyan-500/5">
+                  <tr className="border-b border-lime-400/30 bg-lime-500/5">
                     <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Nombre</th>
                     <th className="text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Teléfono</th>
                     <th className="hidden sm:table-cell text-left py-2 sm:py-3 px-3 sm:px-4 font-semibold text-primary">Eventos</th>
@@ -269,7 +269,7 @@ export default function UsuariosPage() {
                 </thead>
                 <tbody>
                   {filteredUsers.map((user) => (
-                    <tr key={user._id} className="border-b border-cyan-500/20 hover:bg-cyan-500/10 transition-colors duration-200">
+                    <tr key={user._id} className="border-b border-lime-400/20 hover:bg-lime-500/10 transition-colors duration-200">
                       {editingId === user._id ? (
                         <>
                           <td className="py-2 sm:py-4 px-3 sm:px-4">
@@ -354,14 +354,14 @@ export default function UsuariosPage() {
                             <div className="flex justify-center">
                               <button
                                 onClick={() => setOpenMenuId(openMenuId === user._id ? null : user._id)}
-                                className="p-2 hover:bg-cyan-500/20 rounded-full transition-colors"
+                                className="p-2 hover:bg-lime-400/20 rounded-full transition-colors"
                               >
                                 <MoreVertical size={18} className="text-primary" />
                               </button>
                               
                               {/* Menú desplegable */}
                               {openMenuId === user._id && (
-                                <div className="absolute right-0 mt-8 w-48 bg-bg-card border border-cyan-500/30 rounded-lg shadow-lg shadow-cyan-500/10 z-10">
+                                <div className="absolute right-0 mt-8 w-48 bg-bg-card border border-lime-400/30 rounded-lg shadow-lg shadow-lime-400/10 z-10">
                                   <button
                                     onClick={() => handleViewEvents(user)}
                                     className="block w-full text-left px-4 py-2 hover:bg-accent/10 text-accent flex items-center transition-colors"
@@ -371,21 +371,21 @@ export default function UsuariosPage() {
                                   </button>
                                   <button
                                     onClick={() => handleViewDeposits(user)}
-                                    className="block w-full text-left px-4 py-2 hover:bg-secondary/10 text-secondary flex items-center transition-colors border-t border-cyan-500/20"
+                                    className="block w-full text-left px-4 py-2 hover:bg-secondary/10 text-secondary flex items-center transition-colors border-t border-lime-400/20"
                                   >
                                     <Eye size={14} className="mr-2" />
                                     Ver Depósitos
                                   </button>
                                   <button
                                     onClick={() => handleEdit(user)}
-                                    className="block w-full text-left px-4 py-2 hover:bg-primary/10 text-primary flex items-center border-t border-cyan-500/20 transition-colors"
+                                    className="block w-full text-left px-4 py-2 hover:bg-primary/10 text-primary flex items-center border-t border-lime-400/20 transition-colors"
                                   >
                                     <Edit2 size={14} className="mr-2" />
                                     Editar
                                   </button>
                                   <button
                                     onClick={() => handleDelete(user._id)}
-                                    className="block w-full text-left px-4 py-2 hover:bg-red-500/10 text-red-400 flex items-center border-t border-cyan-500/20 transition-colors"
+                                    className="block w-full text-left px-4 py-2 hover:bg-red-500/10 text-red-400 flex items-center border-t border-lime-400/20 transition-colors"
                                   >
                                     <Trash2 size={14} className="mr-2" />
                                     Eliminar
@@ -411,7 +411,7 @@ export default function UsuariosPage() {
         {/* Modal para Agregar Usuario */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-bg-card rounded-lg max-w-md w-full overflow-hidden shadow-2xl border border-cyan-500/30">
+            <div className="bg-bg-card rounded-lg max-w-md w-full overflow-hidden shadow-2xl border border-lime-400/30">
               <div className="bg-primary text-white p-6 flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Registrar Usuario</h2>
                 <button onClick={() => setShowAddModal(false)} className="hover:bg-blue-800 p-1 rounded transition-colors">
@@ -474,7 +474,7 @@ export default function UsuariosPage() {
                   <button
                     type="button"
                     onClick={() => setShowAddModal(false)}
-                    className="flex-1 px-4 py-2 bg-cyan-500/20 text-primary border border-cyan-500/30 rounded-lg hover:bg-cyan-500/30 transition-colors font-medium"
+                    className="flex-1 px-4 py-2 bg-lime-500/20 text-primary border border-lime-400/30 rounded-lg hover:bg-lime-500/30 transition-colors font-medium"
                   >
                     Cancelar
                   </button>

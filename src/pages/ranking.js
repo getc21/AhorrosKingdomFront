@@ -142,7 +142,7 @@ export default function RankingPage() {
                       className={`border-b border-gray-200 dark:border-gray-700 transition-colors text-xs sm:text-sm ${
                         currentUserPosition === index
                           ? 'bg-accent/20 font-semibold'
-                          : 'hover:bg-cyan-500/10'
+                          : 'hover:bg-lime-500/10'
                       }`}
                     >
                       <td className="px-2 sm:px-4 py-2 sm:py-4 text-center">

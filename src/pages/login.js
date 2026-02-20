@@ -55,7 +55,7 @@ export default function LoginPage() {
           <p className="text-text-secondary">Plan de Ahorro Comunitario</p>
         </div>
 
-        <div className="card bg-gradient-card border border-cyan-500/30">
+        <div className="card bg-gradient-card border border-lime-400/30">
           <h2 className="text-2xl font-bold text-text-primary mb-6">Iniciar Sesión</h2>
 
           {error && (
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 onChange={handleChange}
                 placeholder="Número de celular"
                 required
-                className="w-full px-4 py-2 bg-bg-card border border-cyan-500/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
+                className="w-full px-4 py-2 bg-bg-card border border-lime-400/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
               />
             </div>
 

@@ -9,9 +9,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#00D4FF',
-        secondary: '#00B4D8',
-        accent: '#9D4EDD',
+        primary: '#97E332', // limeLight - Verde claro
+        secondary: '#6ABF4B', // greenMedium - Verde medio
+        accent: '#008A8A', // tealDark - Teal oscuro
+        'text-deep': '#006B76', // textDeepBlue - Azul profundo
         'bg-main': '#0F172A',
         'bg-card': '#1E293B',
         'bg-card-dark': '#0F1729',
@@ -20,9 +21,9 @@ module.exports = {
         'text-disabled': '#94A3B8',
       },
       backgroundImage: {
-        'gradient-hero': 'linear-gradient(135deg, #00D4FF 0%, #00B4D8 50%, #9D4EDD 100%)',
-        'gradient-card': 'linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(157, 78, 221, 0.1) 100%)',
-        'gradient-btn': 'linear-gradient(135deg, #00D4FF 0%, #00B4D8 100%)',
+        'gradient-hero': 'linear-gradient(135deg, #97E332 0%, #008A8A 50%, #6ABF4B 100%)',
+        'gradient-card': 'linear-gradient(135deg, rgba(151, 227, 50, 0.1) 0%, rgba(0, 138, 138, 0.1) 100%)',
+        'gradient-btn': 'linear-gradient(135deg, #97E332 0%, #6ABF4B 100%)',
       },
     },
   },

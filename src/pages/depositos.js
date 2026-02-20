@@ -146,7 +146,7 @@ export default function DepositosPage() {
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="flex items-center space-x-2 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300"
+            className="flex items-center space-x-2 px-4 py-2 bg-gradient-btn text-white rounded-lg hover:shadow-lg hover:shadow-lime-400/50 transition-all duration-300"
           >
             <Plus size={20} />
             <span>Nuevo Depósito</span>
@@ -162,7 +162,7 @@ export default function DepositosPage() {
         {/* Modal Dialog */}
         {showForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-bg-card border border-cyan-500/30 rounded-lg shadow-xl shadow-cyan-500/10 max-w-md w-full p-6">
+            <div className="bg-bg-card border border-lime-400/30 rounded-lg shadow-xl shadow-lime-400/10 max-w-md w-full p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-primary">Crear Nuevo Depósito</h2>
                 <button
@@ -206,7 +206,7 @@ export default function DepositosPage() {
                       value={formData.eventId}
                       onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
                       required
-                      className="w-full px-4 py-2 bg-bg-main border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+                      className="w-full px-4 py-2 bg-bg-main border border-lime-400/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
                     >
                       <option value="">Selecciona un evento</option>
                       {userRegisteredEvents.map((event) => (
@@ -230,7 +230,7 @@ export default function DepositosPage() {
                     onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                     placeholder="0.00"
                     required
-                    className="w-full px-4 py-2 bg-bg-main border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
+                    className="w-full px-4 py-2 bg-bg-main border border-lime-400/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-disabled"
                   />
                   <p className="text-xs text-text-secondary mt-1">Mínimo: Bs. 5</p>
                 </div>
