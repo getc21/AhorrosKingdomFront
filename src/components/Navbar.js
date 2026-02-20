@@ -36,7 +36,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-bg-main border-b border-cyan-500/20 shadow-lg shadow-cyan-500/10 sticky top-0 z-50">
+    <nav className="bg-bg-main border-b border-lime-400/20 shadow-lg shadow-lime-400/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Logo */}
@@ -49,7 +49,7 @@ export default function Navbar() {
             {mounted && (
               <button
                 onClick={toggleTheme}
-                className="p-1.5 sm:p-2 hover:bg-cyan-500/20 rounded-lg transition"
+                className="p-1.5 sm:p-2 hover:bg-lime-400/20 rounded-lg transition"
                 title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
               >
                 {isDark ? <Sun size={18} className="sm:w-5 sm:h-5 text-primary" /> : <Moon size={18} className="sm:w-5 sm:h-5 text-secondary" />}
@@ -75,7 +75,7 @@ export default function Navbar() {
                 {mounted && (
                   <button
                     onClick={toggleTheme}
-                    className="p-1.5 sm:p-2 hover:bg-cyan-500/20 rounded-lg transition"
+                    className="p-1.5 sm:p-2 hover:bg-lime-400/20 rounded-lg transition"
                     title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
                   >
                     {isDark ? <Sun size={18} className="text-primary" /> : <Moon size={18} className="text-secondary" />}
@@ -97,7 +97,7 @@ export default function Navbar() {
                 {mounted && (
                   <button
                     onClick={toggleTheme}
-                    className="p-2 hover:bg-cyan-500/20 rounded-lg transition"
+                    className="p-2 hover:bg-lime-400/20 rounded-lg transition"
                   >
                     {isDark ? <Sun size={20} className="text-primary" /> : <Moon size={20} className="text-secondary" />}
                   </button>

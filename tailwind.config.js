@@ -9,10 +9,32 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#97E332', // limeLight - Verde claro
-        secondary: '#6ABF4B', // greenMedium - Verde medio
-        accent: '#008A8A', // tealDark - Teal oscuro
-        'text-deep': '#006B76', // textDeepBlue - Azul profundo
+        // Light mode colors
+        light: {
+          primary: '#97E332',
+          secondary: '#6ABF4B',
+          accent: '#008A8A',
+          'bg-main': '#F8FAFC',
+          'bg-card': '#FFFFFF',
+          'text-primary': '#0F172A',
+          'text-secondary': '#475569',
+          'text-disabled': '#CBD5E1',
+        },
+        // Dark mode colors
+        dark: {
+          primary: '#97E332',
+          secondary: '#6ABF4B',
+          accent: '#008A8A',
+          'bg-main': '#0F172A',
+          'bg-card': '#1E293B',
+          'text-primary': '#F1F5F9',
+          'text-secondary': '#CBD5E1',
+          'text-disabled': '#94A3B8',
+        },
+        // Exported for easy use
+        primary: '#97E332',
+        secondary: '#6ABF4B',
+        accent: '#008A8A',
         'bg-main': '#0F172A',
         'bg-card': '#1E293B',
         'bg-card-dark': '#0F1729',
