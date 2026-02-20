@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { LogOut, Menu, X, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -40,8 +41,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Logo */}
-          <Link href="/" className="text-lg sm:text-2xl font-bold truncate mr-2">
-            <span className="gradient-text">Sistema de ahorros ENERGY</span>
+          <Link href="/" className="flex items-center truncate mr-2">
+            <Image 
+              src="/logos/logonav.png" 
+              alt="Logo ENERGY"
+              width={150}
+              height={40}
+              priority
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Mobile menu button */}

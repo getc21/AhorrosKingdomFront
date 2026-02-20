@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react';
 import api from '@/lib/api';
 
@@ -51,7 +52,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-bg-main flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-2">Sistema de ahorros ENERGY</h1>
+          <Image 
+            src="/logos/logologin.png" 
+            alt="Logo ENERGY" 
+            width={200} 
+            height={120}
+            priority
+            className="mx-auto mb-2"
+          />
           <p className="text-text-secondary">Plan de Ahorro Comunitario</p>
         </div>
 
