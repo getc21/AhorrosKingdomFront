@@ -81,20 +81,20 @@ button {
 }
 
 .btn-primary {
-  @apply px-4 py-2 bg-gradient-btn text-white rounded-lg font-medium hover:shadow-lg hover:shadow-lime-400/50 transition-all duration-300;
+  @apply px-4 py-2 bg-gradient-btn text-white rounded-lg font-medium hover:shadow-lg hover:shadow-lime-400/50 transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 active:scale-95;
 }
 
 .btn-secondary {
-  @apply px-4 py-2 bg-secondary text-white rounded-lg font-medium hover:shadow-lg hover:shadow-green-500/50 transition-all duration-300;
+  @apply px-4 py-2 bg-secondary text-white rounded-lg font-medium hover:shadow-lg hover:shadow-green-500/50 transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 active:scale-95;
 }
 
 .btn-outline {
-  @apply px-4 py-2 border-2 border-primary text-primary rounded-lg font-medium hover:bg-primary/10 transition-all duration-300;
+  @apply px-4 py-2 border-2 border-primary text-primary rounded-lg font-medium hover:bg-primary/10 transition-all duration-300 hover:shadow-md active:scale-95;
 }
 
 /* Input styles for both light and dark modes */
 input, select, textarea {
-  @apply transition-colors duration-300;
+  @apply transition-all duration-300;
 }
 
 html.dark input, 
@@ -130,6 +130,7 @@ html:not(.dark) select:focus,
 html:not(.dark) textarea:focus {
   border-color: #97E332;
   box-shadow: 0 0 0 3px rgba(151, 227, 50, 0.1);
+  transform: translateY(-2px);
 }
 
 html.dark input:focus,
@@ -137,6 +138,7 @@ html.dark select:focus,
 html.dark textarea:focus {
   border-color: #97E332;
   box-shadow: 0 0 0 3px rgba(151, 227, 50, 0.1);
+  transform: translateY(-2px);
 }
 
 /* Border and style adjustments for light mode */
@@ -182,12 +184,12 @@ html:not(.dark) [role="dialog"] {
 
 /* Dark mode card */
 html.dark .card {
-  @apply bg-gradient-card border border-lime-400/20;
+  @apply bg-gradient-card border border-lime-400/20 transition-all duration-300 hover:border-lime-400/50 hover:-translate-y-1 hover:shadow-2xl hover:shadow-lime-400/20;
 }
 
 /* Light mode card */
 html:not(.dark) .card {
-  @apply bg-white border border-lime-300 shadow-sm;
+  @apply bg-white border border-lime-300 shadow-sm transition-all duration-300 hover:border-lime-400 hover:shadow-lg hover:-translate-y-1;
 }
 
 .progress-bar {
@@ -223,4 +225,68 @@ html:not(.dark) .glass {
 
 .glow-accent {
   @apply shadow-lg shadow-teal-500/50;
+}
+/* Modern and animated links */
+a {
+  @apply transition-all duration-300;
+}
+
+a:hover {
+  @apply text-primary;
+}
+
+/* Animated button base */
+button {
+  @apply transition-all duration-300;
+}
+
+/* Smooth page transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Ripple effect for interactive elements */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Hover scale effect for images */
+img {
+  @apply transition-transform duration-300;
+}
+
+/* Table row animations */
+tbody tr {
+  @apply transition-all duration-300;
+}
+
+tbody tr:hover {
+  @apply scale-[1.01];
+}
+
+/* Badge animations */
+.badge {
+  @apply transition-all duration-300 hover:scale-110;
+}
+
+/* Focus states with animation */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  @apply outline-none transition-all duration-300;
 }

@@ -11,6 +11,39 @@ module.exports = {
       sans: ['Poppins', 'system-ui', 'sans-serif'],
     },
     extend: {
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in',
+        'slide-up': 'slideUp 0.5s ease-out',
+        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'bounce-smooth': 'bounceSmooth 2s infinite',
+        'shimmer': 'shimmer 2s infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        pulseGlow: {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(151, 227, 50, 0.7)' },
+          '50%': { boxShadow: '0 0 0 10px rgba(151, 227, 50, 0)' },
+        },
+        bounceSmooth: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '200% center' },
+          '100%': { backgroundPosition: '-200% center' },
+        },
+      },
+      transitionDuration: {
+        '250': '250ms',
+        '350': '350ms',
+      },
       colors: {
         // Light mode colors
         light: {
