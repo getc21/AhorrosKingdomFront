@@ -99,9 +99,11 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/login" className="hover:text-primary transition">
-                  Iniciar Sesión
-                </Link>
+                {router.pathname !== '/login' && (
+                  <Link href="/login" className="hover:text-primary transition">
+                    Iniciar Sesión
+                  </Link>
+                )}
                 {mounted && (
                   <button
                     onClick={toggleTheme}
@@ -135,9 +137,11 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/login" className="block hover:text-primary py-2 transition">
-                  Iniciar Sesión
-                </Link>
+                {router.pathname !== '/login' && (
+                  <Link href="/login" className="block hover:text-primary py-2 transition">
+                    Iniciar Sesión
+                  </Link>
+                )}
               </>
             )}
           </div>
