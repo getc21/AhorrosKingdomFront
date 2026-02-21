@@ -12,9 +12,9 @@ export default function HomePage() {
           <div className="absolute bottom-10 left-10 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Bienvenido a Sistema de ahorros ENERGY</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">Bienvenido a Bless Up</h1>
           <p className="text-xl text-cyan-100 mb-8">
-            Tu plataforma de ahorro comunitario. ¡Juntos alcanzaremos nuestras metas!
+            Tu plataforma de ahorro By Energy. ¡Juntos alcanzaremos nuestras metas!
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/login" className="btn-primary">
