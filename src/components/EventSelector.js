@@ -7,10 +7,24 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [primaryEvent, setPrimaryEvent] = useState(null);
+  const [userRegisteredEvents, setUserRegisteredEvents] = useState([]);
 
   useEffect(() => {
     fetchEvents();
+    fetchUserData();
   }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        const user = JSON.parse(userData);
+        setUserRegisteredEvents(user.registeredEvents || []);
+      }
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+    }
+  };
 
   const fetchEvents = async () => {
     try {
@@ -34,12 +48,20 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
     }
   };
 
-  const selected = events.find((e) => e._id === selectedEventId) || primaryEvent;
+  // Filter events to only show those the user is registered to
+  const filteredEvents = events.filter(event => 
+    userRegisteredEvents.includes(event._id)
+  );
 
-  if (loading || events.length === 0) {
+  const selected = filteredEvents.find((e) => e._id === selectedEventId) || 
+                   (filteredEvents.length > 0 ? filteredEvents[0] : primaryEvent);
+
+  if (loading || filteredEvents.length === 0) {
     return (
       <div className="w-full px-3 py-2 bg-bg-card border border-primary/20 rounded-lg flex items-center justify-between">
-        <div className="text-text-secondary text-sm">Cargando eventos...</div>
+        <div className="text-text-secondary text-sm">
+          {loading ? 'Cargando eventos...' : 'No hay eventos disponibles'}
+        </div>
       </div>
     );
   }
@@ -69,7 +91,7 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
             onClick={() => setIsOpen(false)}
           />
           <div className="absolute top-full left-0 right-0 mt-2 bg-bg-card border border-primary/30 rounded-lg shadow-lg z-30 overflow-hidden">
-            {events.map((event) => (
+            {filteredEvents.map((event) => (
               <button
                 key={event._id}
                 onClick={() => {
