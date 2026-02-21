@@ -33,7 +33,7 @@ export default function Navbar() {
     localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
-    router.push('/login');
+    router.push('/');
   };
 
   return (
@@ -74,9 +74,11 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-2 lg:space-x-6">
             {isAuthenticated ? (
               <>
-                <Link href="/dashboard" className="text-sm lg:text-base hover:text-primary transition">
-                  Dashboard
-                </Link>
+                {router.pathname === '/profile' && (
+                  <Link href="/dashboard" className="text-sm lg:text-base hover:text-primary transition">
+                    Dashboard
+                  </Link>
+                )}
                 <Link href="/profile" className="text-sm lg:text-base hover:text-primary transition">
                   Perfil
                 </Link>
@@ -122,9 +124,11 @@ export default function Navbar() {
           <div className="md:hidden pb-4 space-y-2">
             {isAuthenticated ? (
               <>
-                <Link href="/dashboard" className="block hover:text-primary py-2 transition">
-                  Dashboard
-                </Link>
+                {router.pathname === '/profile' && (
+                  <Link href="/dashboard" className="block hover:text-primary py-2 transition">
+                    Dashboard
+                  </Link>
+                )}
                 <Link href="/profile" className="block hover:text-primary py-2 transition">
                   Perfil
                 </Link>
