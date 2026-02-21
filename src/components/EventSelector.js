@@ -6,65 +6,33 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
   const [events, setEvents] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [primaryEvent, setPrimaryEvent] = useState(null);
   const [userRegisteredEvents, setUserRegisteredEvents] = useState([]);
-  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Get user ID from localStorage
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const user = JSON.parse(userData);
-      setUserId(user._id);
-    }
+    fetchUserAndEvents();
   }, []);
 
-  useEffect(() => {
-    if (userId) {
-      fetchUserEvents();
-    }
-    fetchEvents();
-  }, [userId]);
-
-  const fetchUserEvents = async () => {
-    try {
-      const response = await api.get(`/users/${userId}/events`);
-      const registeredEvents = response.data.data || [];
-      setUserRegisteredEvents(registeredEvents);
-    } catch (err) {
-      console.error('Error fetching user registered events:', err);
-      setUserRegisteredEvents([]);
-    }
-  };
-
-  const fetchEvents = async () => {
+  const fetchUserAndEvents = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/events');
-      const allEvents = response.data.data;
-      setEvents(allEvents);
-
-      // Set primary event as default
-      const primary = allEvents.find((e) => e.isPrimary);
-      setPrimaryEvent(primary);
-
-      // If no selectedEventId, set to primary
-      if (!selectedEventId && primary) {
-        onEventChange(primary._id);
+      // Get user's registered events
+      const userResponse = await api.get('/users/me');
+      const registeredEvents = userResponse.data.data.registeredEvents || [];
+      setUserRegisteredEvents(registeredEvents);
+      
+      // Set first event as default if no event selected
+      if (registeredEvents.length > 0 && !selectedEventId) {
+        onEventChange(registeredEvents[0]._id);
       }
     } catch (err) {
-      console.error('Error fetching events:', err);
+      console.error('Error fetching user events:', err);
+      setUserRegisteredEvents([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Filter events to only show those the user is registered to
-  const filteredEvents = userRegisteredEvents.length > 0 
-    ? userRegisteredEvents 
-    : events.filter(event => event.isPrimary);
-
-  const selected = filteredEvents.find((e) => e._id === selectedEventId) || filteredEvents[0];
+  const selected = userRegisteredEvents.find((e) => e._id === selectedEventId) || userRegisteredEvents[0];
 
   if (loading) {
     return (
@@ -74,7 +42,7 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
     );
   }
 
-  if (!selected) {
+  if (!selected || userRegisteredEvents.length === 0) {
     return (
       <div className="w-full px-3 py-2 bg-bg-card border border-primary/20 rounded-lg flex items-center justify-between">
         <div className="text-text-secondary text-sm">No tienes eventos registrados</div>
@@ -107,7 +75,7 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
             onClick={() => setIsOpen(false)}
           />
           <div className="absolute top-full left-0 right-0 mt-2 bg-bg-card border border-primary/30 rounded-lg shadow-lg z-30 overflow-hidden">
-            {filteredEvents.map((event) => (
+            {userRegisteredEvents.map((event) => (
               <button
                 key={event._id}
                 onClick={() => {
