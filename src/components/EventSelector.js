@@ -8,21 +8,32 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
   const [loading, setLoading] = useState(true);
   const [primaryEvent, setPrimaryEvent] = useState(null);
   const [userRegisteredEvents, setUserRegisteredEvents] = useState([]);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    fetchEvents();
-    fetchUserData();
+    // Get user ID from localStorage
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      setUserId(user._id);
+    }
   }, []);
 
-  const fetchUserData = async () => {
+  useEffect(() => {
+    if (userId) {
+      fetchUserEvents();
+    }
+    fetchEvents();
+  }, [userId]);
+
+  const fetchUserEvents = async () => {
     try {
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        const user = JSON.parse(userData);
-        setUserRegisteredEvents(user.registeredEvents || []);
-      }
+      const response = await api.get(`/users/${userId}/events`);
+      const registeredEvents = response.data.data || [];
+      setUserRegisteredEvents(registeredEvents);
     } catch (err) {
-      console.error('Error fetching user data:', err);
+      console.error('Error fetching user registered events:', err);
+      setUserRegisteredEvents([]);
     }
   };
 
@@ -49,19 +60,24 @@ export default function EventSelector({ selectedEventId, onEventChange }) {
   };
 
   // Filter events to only show those the user is registered to
-  const filteredEvents = events.filter(event => 
-    userRegisteredEvents.includes(event._id)
-  );
+  const filteredEvents = userRegisteredEvents.length > 0 
+    ? userRegisteredEvents 
+    : events.filter(event => event.isPrimary);
 
-  const selected = filteredEvents.find((e) => e._id === selectedEventId) || 
-                   (filteredEvents.length > 0 ? filteredEvents[0] : primaryEvent);
+  const selected = filteredEvents.find((e) => e._id === selectedEventId) || filteredEvents[0];
 
-  if (loading || filteredEvents.length === 0) {
+  if (loading) {
     return (
       <div className="w-full px-3 py-2 bg-bg-card border border-primary/20 rounded-lg flex items-center justify-between">
-        <div className="text-text-secondary text-sm">
-          {loading ? 'Cargando eventos...' : 'No hay eventos disponibles'}
-        </div>
+        <div className="text-text-secondary text-sm">Cargando eventos...</div>
+      </div>
+    );
+  }
+
+  if (!selected) {
+    return (
+      <div className="w-full px-3 py-2 bg-bg-card border border-primary/20 rounded-lg flex items-center justify-between">
+        <div className="text-text-secondary text-sm">No tienes eventos registrados</div>
       </div>
     );
   }
