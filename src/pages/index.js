@@ -119,7 +119,6 @@ export default function HomePage() {
           <div className="card hover:border-accent transition-all duration-300">
             <h3 className="text-lg font-bold text-accent mb-4">❌ No Permitido</h3>
             <ul className="space-y-2 text-text-secondary">
-              <li>✗ Editar depósitos personalmente</li>
               <li>✗ Retiros sin autorización</li>
               <li>✗ Depósitos fuera de reuniones</li>
               <li>✗ Depósitos menores a Bs. 5</li>
@@ -138,9 +137,9 @@ export default function HomePage() {
           <p className="text-xl text-cyan-100 mb-8">
             Únete a nuestra comunidad de ahorro y alcanza tus metas.
           </p>
-          <Link href="/register" className="btn-primary">
-            Crear Cuenta Ahora
-          </Link>
+          <p className="text-lg text-cyan-100">
+            Comunícate con cualquier líder para aperturar tu cuenta
+          </p>
         </div>
       </div>
 
@@ -148,7 +147,7 @@ export default function HomePage() {
       <footer className="bg-bg-card border-t border-cyan-500/20 text-text-secondary py-8 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <p>
-            © 2024 Sistema de ahorros ENERGY. Todos los derechos reservados.
+            © 2024 BlessUp. Todos los derechos reservados.
           </p>
         </div>
       </footer>
