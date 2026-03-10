@@ -90,6 +90,11 @@ export default function DepositosPage() {
       
       const depositData = response.data.data;
       
+      console.log('Deposit Response:', depositData); // Debug
+      console.log('isFirstDeposit:', depositData.isFirstDeposit);
+      console.log('whatsappConfirmationLink:', depositData.whatsappConfirmationLink);
+      console.log('whatsappWelcomeLink:', depositData.whatsappWelcomeLink);
+      
       // Manejo de WhatsApp para primer depósito
       if (depositData.isFirstDeposit && depositData.whatsappWelcomeLink) {
         setTimeout(() => {
@@ -98,10 +103,12 @@ export default function DepositosPage() {
           
           if (sendWelcome) {
             // Abrir primer mensaje
+            console.log('Opening welcome message:', depositData.whatsappWelcomeLink);
             window.open(depositData.whatsappWelcomeLink, '_blank');
             
             // Después de 1.5s, abrir segundo mensaje
             setTimeout(() => {
+              console.log('Opening confirmation message:', depositData.whatsappConfirmationLink);
               window.open(depositData.whatsappConfirmationLink, '_blank');
             }, 1500);
           }
@@ -111,9 +118,12 @@ export default function DepositosPage() {
       else if (depositData.whatsappConfirmationLink) {
         setTimeout(() => {
           if (confirm('¿Deseas enviar la confirmación del depósito por WhatsApp?')) {
+            console.log('Opening confirmation message:', depositData.whatsappConfirmationLink);
             window.open(depositData.whatsappConfirmationLink, '_blank');
           }
         }, 500);
+      } else {
+        console.log('No WhatsApp links available');
       }
       
       setFormData({ userId: '', amount: '', eventId: events.find((e) => e.isPrimary)?._id || '' });
