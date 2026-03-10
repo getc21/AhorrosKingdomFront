@@ -88,12 +88,30 @@ export default function DepositosPage() {
         eventId: formData.eventId,
       });
       
-      // Si la respuesta contiene whatsappLink, mostrar mensaje con botón
-      if (response.data.data.whatsappLink) {
-        const whatsappLink = response.data.data.whatsappLink;
+      const depositData = response.data.data;
+      
+      // Manejo de WhatsApp para primer depósito
+      if (depositData.isFirstDeposit && depositData.whatsappWelcomeLink) {
         setTimeout(() => {
-          if (confirm('¿Deseas enviar el recibo por WhatsApp?')) {
-            window.open(whatsappLink, '_blank');
+          // Primer mensaje: Bienvenida
+          const sendWelcome = confirm('🔰 Se enviarán dos mensajes importantes:\n\n1️⃣ Mensaje de bienvenida con reglas\n2️⃣ Confirmación de depósito\n\n¿Enviar ahora?');
+          
+          if (sendWelcome) {
+            // Abrir primer mensaje
+            window.open(depositData.whatsappWelcomeLink, '_blank');
+            
+            // Después de 1.5s, abrir segundo mensaje
+            setTimeout(() => {
+              window.open(depositData.whatsappConfirmationLink, '_blank');
+            }, 1500);
+          }
+        }, 500);
+      } 
+      // Manejo de WhatsApp para depósitos posteriores
+      else if (depositData.whatsappConfirmationLink) {
+        setTimeout(() => {
+          if (confirm('¿Deseas enviar la confirmación del depósito por WhatsApp?')) {
+            window.open(depositData.whatsappConfirmationLink, '_blank');
           }
         }, 500);
       }
